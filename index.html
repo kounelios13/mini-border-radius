@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Mini border radius generator</title>
+	<script src="src/bower_components/jquery/dist/jquery.min.js"></script>
+	<link rel="stylesheet" href="src/bower_components/bootstrap/dist/css/bootstrap.min.css">
+	<style>
+	#generatorArea{
+		width: 80%;
+		margin:auto;
+	}
+	#generatorOutput{
+		height: 10em;
+		width: 10em;
+		border:2px solid grey;		
+		margin:auto;
+	}
+	input[type="range"].radius_slider{
+		outline: none;
+		width: 25%;
+		-webkit-appearance:none;
+		background: dodgerblue;
+		border-radius:100px;
+	}
+	input[type="range"].radius_slider::-webkit-slider-thumb{
+		background: red;
+		height: 10px;
+		width: 10px;
+	}
+	#top_left_corner,#bottom_left_corner{
+		float: left;
+	}
+	#top_right_corner,#bottom_right_corner{
+		float:right;
+	}
+	</style>
+</head>
+<body>
+	<div id="generatorArea">
+		<input type="range" class="radius_slider" id="top_left_corner">
+		<input type="range" class="radius_slider" id="top_right_corner">
+		<div id="generatorOutput"></div>
+		<input type="range" class="radius_slider" id="bottom_right_corner">
+		<input type="range" class="radius_slider" id="bottom_left_corner_corner">
+		
+	</div>
+</body>
+</html>
