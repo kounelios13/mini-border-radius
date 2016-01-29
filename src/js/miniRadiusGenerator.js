@@ -4,13 +4,13 @@ function Generator(app_container_id){
 		return $(o).val();
 	}
 	this.generator_markup="<div id='generatorContainer'>\n";
-	this.generator_markup+="<input type='range' class='radius_slider' id='top_left_corner' min='0' max='200' value='0'>\n";
-	this.generator_markup+="<input type='range' class='radius_slider' id='top_right_corner' min='0' max='200' value='0'>\n";
+	this.generator_markup+="<input type='range' class='radius_slider' id='top_left_corner' min='0' max='100' value='0'>\n";
+	this.generator_markup+="<input type='range' class='radius_slider' id='top_right_corner' min='0' max='100' value='0'>\n";
 	this.generator_markup+="<div class='generatorOutput'></div>\n";
-	this.generator_markup+="<input type='range' class='radius_slider' id='bottom_right_corner' min='0' max='200' value='0'>\n";
-	this.generator_markup+="<input type='range' class='radius_slider' id='bottom_left_corner' min='0' max='200' value='0'></div>\n";
-	this.generator_markup+="<div class='panel panel-primary'>\n<div class='panel-body text-center'>";
-	this.generator_markup+="border-radius: <span class='border_radius_code_output'></span>;\n</div></div>";
+	this.generator_markup+="<input type='range' class='radius_slider' id='bottom_right_corner' min='0' max='100' value='0'>\n";
+	this.generator_markup+="<input type='range' class='radius_slider' id='bottom_left_corner' min='0' max='100' value='0'></div>\n";
+	this.generator_markup+="<div class='panel panel-primary'>\n<div class='panel-body text-center bg-success'>";
+	this.generator_markup+="border-radius: <span class='border_radius_code_output'>0px 0px 0px 0px</span>;\n</div></div>";
 	//the id of the container the generator will be added in
 	this.app_container_id=app_container_id;
 	$(this.app_container_id).append(this.generator_markup);
@@ -29,6 +29,7 @@ function Generator(app_container_id){
 	this.setBackgound=function(bg){
 		$(this.app_container_id+" .generatorOutput").css("background",bg);
 	};
+	this.setBackgound("maroon");
 	this.setMax=function(value){
 		var sliders=$(this.app_container_id+" .radius_slider");
 		for(var x=0;x<sliders.length;x++)
