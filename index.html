@@ -35,6 +35,9 @@
 	#top_right_corner,#bottom_right_corner{
 		float:right;
 	}
+	.panel{
+		margin-top: 2em;
+	}
 	</style>
 	<script src='src/js/miniRadiusGenerator.js'></script>
 	 <script>
@@ -44,23 +47,26 @@
 	 	gen=new Generator("#sample");
 	 	gen2=new Generator("#sample2");
 	 	gen3=new Generator("#sample3");
-	 	gen2.setSize("20em","20em");
+	 	//gen2.setSize("20em","20em");
 	 	$("#sample").on("mousemove","input[type='range']",function(){
 	 		gen.activateGenerator();
 	 	});
 	 	$("#sample2").on("mousemove","input[type='range']",function(){
 	 		gen2.activateGenerator();
 	 	});
+	 	$("#sample3").on("mousemove","input[type='range']",function(){
+	 		gen3.activateGenerator();
+	 	});
 	 });
 
 	 </script>
 </head>
 <body>
- <div class="btn btn-primary" onclick="activateGenerator()">Activate generator</div>
-	 <div class="btn btn-warning" onclick="disableGenerator()">Disable generator</div>
+
 	 <div id="sample" class="container"></div>
 	 <hr>
 	 <div id="sample2" class="container"></div>
-	 
+	 <div id="sample3" class="container"></div>
+	
 </body>
 </html>
