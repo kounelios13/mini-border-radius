@@ -26,4 +26,20 @@ function Generator(app_container_id){
 	this.setBackgound=function(bg){
 		$(this.app_container_id+" .generatorOutput").css("background",bg);
 	};
+	this.setMax=function(value){
+		var sliders=$(this.app_container_id+" .radius_slider");
+		for(var x=0;x<sliders.length;x++)
+			try{
+				//Even if the use enters a negative value there won't be any problem since Math.abs will allways return a possitive value
+				$(sliders[x]).prop("max",Math.abs(value));
+			}
+			catch(e){
+				alert("Invalid value");
+			}
+	};
+	this.init=function(container,height,width,max){
+		this.app_container_id=container;
+		this.setSize(height,width);
+		this.setMax(max);
+	};
 }
