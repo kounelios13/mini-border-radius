@@ -1,27 +1,29 @@
-var generatorContainer="<div id='generatorContainer'>\n";
-generatorContainer+="<input type='range' class='radius_slider' id='top_left_corner' min='0' max='100' value='0'>\n";
-generatorContainer+="<input type='range' class='radius_slider' id='top_right_corner' min='0' max='100' value='0'>\n";
-generatorContainer+="<div id='generatorOutput'></div>\n";
-generatorContainer+="<input type='range' class='radius_slider' id='bottom_right_corner' min='0' max='100' value='0'>\n";
-generatorContainer+="<input type='range' class='radius_slider' id='bottom_left_corner' min='0' max='100' value='0'></div>\n";
-var generator_application_container_id="#sample";//the id of the container the generator will be added in
-function val(o){
-	return $(o).val();
+function Generator(app_container_id){
+	var code='';
+	this.val=function(o){
+		return $(o).val();
+	}
+	this.generatorContainer="<div id='generatorContainer'>\n";
+	this.generatorContainer+="<input type='range' class='radius_slider' id='top_left_corner' min='0' max='200' value='0'>\n";
+	this.generatorContainer+="<input type='range' class='radius_slider' id='top_right_corner' min='0' max='200' value='0'>\n";
+	this.generatorContainer+="<div class='generatorOutput'></div>\n";
+	this.generatorContainer+="<input type='range' class='radius_slider' id='bottom_right_corner' min='0' max='200' value='0'>\n";
+	this.generatorContainer+="<input type='range' class='radius_slider' id='bottom_left_corner' min='0' max='200' value='0'></div>\n";
+	//the id of the container the generator will be added in
+	this.app_container_id=app_container_id;
+	$(this.app_container_id).append(this.generatorContainer);
+	this.activateGenerator=function(){
+		var sliders=$(this.app_container_id+" .radius_slider");
+		this.code=this.val(sliders[0])+"px "+this.val(sliders[1])+"px "+this.val(sliders[2])+"px "+this.val(sliders[3])+"px";
+		$(this.app_container_id+" .generatorOutput").css("border-radius",this.code);
+	};//this will be used inside an event listener to activate the generator
+	this.getCode=function(){
+		return this.code;
+	};
+	this.setSize=function(height,width){
+		$(this.app_container_id+" .generatorOutput").height(height).width(width);
+	};
+	this.setBackgound=function(bg){
+		$(this.app_container_id+" .generatorOutput").css("background",bg);
+	};
 }
-function log(o){
-	console.log(o);
-}
-/*function activateGenerator(){
-	$(generator_application_container_id).append(generatorContainer);
-	
-}
-function disableGenerator(){
-	$("#generatorContainer").remove();
-}*/
-$(document).ready(function(){
-	$(generator_application_container_id).append(generatorContainer);
-	$('.radius_slider').on("mousemove touchmove input",function(){
-		var code=val("#top_left_corner")+"px "+val("#top_right_corner")+"px "+val("#bottom_right_corner")+"px "+val("#bottom_left_corner")+"px";
-		$("#generatorOutput").css("border-radius",code);
-	});
-});
