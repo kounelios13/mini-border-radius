@@ -11,7 +11,7 @@
 		width: 80%;
 		margin:auto;
 	}
-	#generatorOutput{
+	.generatorOutput{
 		height: 10em;
 		width: 10em;
 		border:2px solid grey;		
@@ -36,11 +36,32 @@
 		float:right;
 	}
 	</style>
+	<script src='src/js/miniRadiusGenerator.js'></script>
+	 <script>
+	 var gen,gen2,gen3;
+	
+	 $(document).ready(function(){
+	 	gen=new Generator("#sample");
+	 	gen2=new Generator("#sample2");
+	 	gen3=new Generator("#sample3");
+	 	gen2.setSize("20em","20em");
+	 	$("#sample").on("mousemove","input[type='range']",function(){
+	 		gen.activateGenerator();
+	 		
+	 	});
+	 	$("#sample2").on("mousemove","input[type='range']",function(){
+	 		gen2.activateGenerator();
+	 	});
+	 });
+
+	 </script>
 </head>
 <body>
  <div class="btn btn-primary" onclick="activateGenerator()">Activate generator</div>
 	 <div class="btn btn-warning" onclick="disableGenerator()">Disable generator</div>
 	 <div id="sample" class="container"></div>
-	 <script src='src/js/miniRadiusGenerator.js'></script>
+	 <hr>
+	 <div id="sample2" class="container"></div>
+	 
 </body>
 </html>
