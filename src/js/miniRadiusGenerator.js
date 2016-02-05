@@ -19,7 +19,6 @@ function Generator(arguments,custom_object){
 		return $(o).val();
 	}
 	this.custom_object=custom_object||".generatorOutput";
-	log(this.custom_object);
 	this.options=["10em","10em",100,"maroon"];
 	this.sliders=[];
 	this.generator_markup="<div class='generatorContainer'>\n";
@@ -133,9 +132,14 @@ function Generator(arguments,custom_object){
 		});
 		return this;//return the whole function so as to be chainable
 	};
-	this.replaceObject=function(object){
+	this.replaceObject=function(object,restrict_size){
 		$(this.app_container_id+" "+this.custom_object).replaceWith($(object));
+		$(object).addClass("center-block");
 		this.custom_object=object;
+		if(!restrict_size)
+			this.options=[$(object).css("height"),$(object).css("width"),this.options[2],$(object).css("background")];
+		else
+			this.options=[this.options[0],this.options[1],this.options[2],$(object).css("background")];
 		this.init(this.options);
 		return this;
 	};
