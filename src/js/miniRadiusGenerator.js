@@ -133,7 +133,7 @@ function Generator(arguments,custom_object){
 		return this;//return the whole function so as to be chainable
 	};
 	this.replaceObject=function(object,restrict_size){
-		if(!object || object[0]=='.')
+		if(!object || object[0]=='.' || object[0] != "#")
 			throw new Error(!object?"Invalid object detected":"Class detected.Please switch to an object with id insted of class");
 		$(object).addClass("center-block");
 		$(this.getId()+" "+this.custom_object).replaceWith($(object));//fine up to here
