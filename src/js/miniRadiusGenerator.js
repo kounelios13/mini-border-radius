@@ -3,22 +3,25 @@
 	Licensed under MIT
 	miniRadius generator 2016
 */
-
+function log(o){
+	console.log(o);
+}
 function isChainable(name){
 	name=name[0]=='.'?name.slice(1).split("(")[0]:name.split("(")[0];//remove '.' and "(" and ")"
-	var chain={"init":true,"activateGenerator":true,"deactivateGenerator":true,"reset":true,
+	var chain={"init":true,"activateGenerator":true,"deactivateGenerator":true,"replaceObject":true,"reset":true,
 	"setSize":true,"setBackground":true,"setMax":true,
 	"getId":false,"getCode":false,"getOptions":false};
 	return chain[name] != undefined ?chain[name]:false;//if the key does not exist in the above dictionary return  false else return its value
 }
-function Generator(arguments){
+function Generator(arguments,custom_object){
 	var code='';
 	var val=function(o){
 		return $(o).val();
 	}
+	this.custom_object=custom_object||".generatorOutput";
 	this.options=["10em","10em",100,"maroon"];
 	this.sliders=[];
-	this.generator_markup="<div id='generatorContainer'>\n";
+	this.generator_markup="<div class='generatorContainer'>\n";
 	this.generator_markup+="<input type='range' class='radius_slider' id='top_left_corner' min='0' max='100' value='0'>\n";
 	this.generator_markup+="<input type='range' class='radius_slider' id='top_right_corner' min='0' max='100' value='0'>\n";
 	this.generator_markup+="<div class='generatorOutput'></div>\n";
@@ -29,12 +32,12 @@ function Generator(arguments){
 	this.setSize=function(height,width){
 		this.options[0]=height;
 		this.options[1]=width;
-		$(this.app_container_id+" .generatorOutput").height(height).width(width);
+		$(this.app_container_id+" "+this.custom_object).height(height).width(width);
 		return this;
 	};
 	this.setBackground=function(bg){
 		this.options[3]=bg;
-		$(this.app_container_id+" .generatorOutput").css("background",bg);
+		$(this.app_container_id+" "+this.custom_object).css("background",bg);
 		return this;
 	};
 	this.setMax=function(value){
@@ -53,7 +56,9 @@ function Generator(arguments){
 	};
 	this.init=function(options){
 		//here we pass an array of default arguments-options with the following order
-		//height,width,max,background_color	
+		//height,width,max,background_color
+		if(!options)
+			throw new Error("No list of options found");	
 		if(options.length<4){
 			throw new Error("Expected 4 parameters but got "+options.length+" parameters");
 		}
@@ -64,6 +69,7 @@ function Generator(arguments){
 		return this;
 	};
 	//detect if the argument passed to the function is a string or an array-list
+
 	if(typeof arguments == 'string'){
 		this.app_container_id=arguments==""?"body":arguments;
 	}
@@ -74,6 +80,8 @@ function Generator(arguments){
 	//Mind the order
 	//First append and then call init()
 	$(this.app_container_id).append(this.generator_markup);
+	if(this.custom_object != ".generatorOutput");
+		$(this.app_container_id+" .generatorOutput").replaceWith($(this.custom_object));
 	this.init(this.options);
 	this.sliders=$(this.app_container_id+" .radius_slider");
 	this.getCode=function(){
@@ -90,7 +98,7 @@ function Generator(arguments){
 		for(var i=0;i<this.sliders.length;i++)
 			$(this.sliders[i]).val(0);
 		$(this.app_container_id+" .border_radius_code_output").text(this.code);
-		$(this.app_container_id+" .generatorOutput").css("border-radius","0");
+		$(this.app_container_id+" "+this.custom_object).css("border-radius","0");
 		return this;
 	};
 	this.activateGenerator=function(){
@@ -105,7 +113,7 @@ function Generator(arguments){
 			$(host_div).on("mousemove",'.radius_slider',function(){
 				gen.code=val(gen.sliders[0])+"px "+val(gen.sliders[1])+"px "+val(gen.sliders[2])+"px "+val(gen.sliders[3])+"px";
 				$(host_div+" .border_radius_code_output").text(gen.code);
-				$(host_div+" .generatorOutput").css("border-radius",gen.code);
+				$(host_div+" "+gen.custom_object).css("border-radius",gen.code);
 			});
 			//attach an event handler
 		});
@@ -117,12 +125,25 @@ function Generator(arguments){
 		//Now we have a reference to the current generator we can use it
 		//inside .ready() function
 		//because if we use 'this' keyword inside .ready() function
-		//we are not referencing to the generator object but to the jQuery object
+		//we are not making a reference to the generator object but to the jQuery object
 		$(document).ready(function(){
 			gen.reset();//First reset the generator 
 			$(gen.getId()).off();//Unregister any event listeners attached to the generator
 		});
 		return this;//return the whole function so as to be chainable
+	};
+	this.replaceObject=function(object,restrict_size){
+		if(!object || object[0]=='.')
+			throw new Error(!object?"Invalid object detected":"Class detected.Please switch to an object with id insted of class");
+		$(object).addClass("center-block");
+		$(this.getId()+" "+this.custom_object).replaceWith($(object));//fine up to here
+		this.custom_object=object;
+		if(!restrict_size)
+			this.options=[$(object).css("height"),$(object).css("width"),this.options[2],$(object).css("background")];
+		else
+			this.options=[this.options[0],this.options[1],this.options[2],$(object).css("background")];
+		this.init(this.options);
+		return this;
 	};
 }
 	
