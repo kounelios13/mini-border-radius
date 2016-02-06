@@ -21,7 +21,7 @@
 	.rep{
 		height: 14em;
 		width: 14em;
-		1background: gold;
+		background: gold;
 		margin: auto;
 	}
 	#demo_object_1{
@@ -29,6 +29,12 @@
 		width: 20em;
 		border:3px solid dodgerblue;
 		background: aliceblue;
+	}
+	#image{
+		display: block;
+		height: 20em;
+		width: 20em;
+		margin: auto;
 	}
 	</style>
 </head>
@@ -125,6 +131,10 @@
 		<div class="panel panel-info">
 			<div class="panel-heading">.reset()</div>
 			<div class="panel-body">Reset the values of the generator.Chainable:Yes</div>
+		</div>
+		<div class="panel panel-info">
+			<div class="panel-heading">.replaceObject(object,restrict_size)</div>
+			<div class="panel-body">Replace the default object where border radius is applied with another one.If you want to keep the new object to have the same size as the previous one pass true as the second parameter in the function .Chainable:Yes</div>
 		</div>
 		<div class="panel panel-info">
 			<div class="panel-heading">.setSize(height,width)</div>
