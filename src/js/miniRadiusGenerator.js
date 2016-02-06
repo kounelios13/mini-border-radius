@@ -133,9 +133,10 @@ function Generator(arguments,custom_object){
 		return this;//return the whole function so as to be chainable
 	};
 	this.replaceObject=function(object,restrict_size){
+		var isClass=object[0]==".";
 		$(this.app_container_id+" "+this.custom_object).replaceWith($(object));
 		$(object).addClass("center-block");
-		this.custom_object=object;
+		this.custom_object=isClass?"."+$(object).prop("class"):"#"+$(object).prop("id");
 		if(!restrict_size)
 			this.options=[$(object).css("height"),$(object).css("width"),this.options[2],$(object).css("background")];
 		else
