@@ -98,7 +98,7 @@ function Generator(arguments,custom_object){
 		for(var i=0;i<this.sliders.length;i++)
 			$(this.sliders[i]).val(0);
 		$(this.app_container_id+" .border_radius_code_output").text(this.code);
-		$(this.app_container_id+" "+custom_object).css("border-radius","0");
+		$(this.app_container_id+" "+this.custom_object).css("border-radius","0");
 		return this;
 	};
 	this.activateGenerator=function(){
@@ -113,7 +113,7 @@ function Generator(arguments,custom_object){
 			$(host_div).on("mousemove",'.radius_slider',function(){
 				gen.code=val(gen.sliders[0])+"px "+val(gen.sliders[1])+"px "+val(gen.sliders[2])+"px "+val(gen.sliders[3])+"px";
 				$(host_div+" .border_radius_code_output").text(gen.code);
-				$(host_div+" "+custom_object).css("border-radius",gen.code);
+				$(host_div+" "+gen.custom_object).css("border-radius",gen.code);
 			});
 			//attach an event handler
 		});
@@ -125,7 +125,7 @@ function Generator(arguments,custom_object){
 		//Now we have a reference to the current generator we can use it
 		//inside .ready() function
 		//because if we use 'this' keyword inside .ready() function
-		//we are not referencing to the generator object but to the jQuery object
+		//we are not making a reference to the generator object but to the jQuery object
 		$(document).ready(function(){
 			gen.reset();//First reset the generator 
 			$(gen.getId()).off();//Unregister any event listeners attached to the generator
@@ -133,10 +133,11 @@ function Generator(arguments,custom_object){
 		return this;//return the whole function so as to be chainable
 	};
 	this.replaceObject=function(object,restrict_size){
-		var isClass=object[0]==".";
-		$(this.app_container_id+" "+this.custom_object).replaceWith($(object));
+		if(!object || object[0]=='.')
+			throw new Error(!object?"Invalid object detected":"Class detected.Please switch to an object with id insted of class");
 		$(object).addClass("center-block");
-		this.custom_object=isClass?"."+$(object).prop("class"):"#"+$(object).prop("id");
+		$(this.getId()+" "+this.custom_object).replaceWith($(object));//fine up to here
+		this.custom_object=object;
 		if(!restrict_size)
 			this.options=[$(object).css("height"),$(object).css("width"),this.options[2],$(object).css("background")];
 		else
