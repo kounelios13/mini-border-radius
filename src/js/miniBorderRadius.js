@@ -149,7 +149,15 @@ function Generator(arguments,custom_object){
 	};
 	this.destroyGenerator=function(){
 		//Warning!!!There is no going back
-		alert("Sorry but this function is still in progrss");
+		//alert("Sorry but this function is still in progrss");
+		var del=confirm("Are you sure you wanna destroy the geenrator?");
+		if(del){
+			$(this.getId()+" .generatorContainer").remove();
+			$(this.getId()+" .panel").remove();
+			log("Generator destroyed");
+		}
+		else
+			alert("Operation aborted");
 	};
 	this.replaceObject=function(object,restrict_size){
 		if(!object || object[0]=='.' || object[0] != "#")
