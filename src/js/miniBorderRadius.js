@@ -13,6 +13,18 @@ function isChainable(name){
 	"getId":false,"getCode":false,"getOptions":false};
 	return chain[name] != undefined ?chain[name]:false;//if the key does not exist in the above dictionary return  false else return its value
 }
+function checkRequirements(){
+	if (typeof jQuery == 'undefined') {  
+    	// jQuery is not  loaded.Add it
+    	var head = document.getElementsByTagName("head")[0];
+    	var js=document.createElement("script");
+    	js.type="text/javascript";
+    	js.src="http://code.jquery.com/jquery-2.2.0.min.js";
+    	head.appendChild(js);
+    	log("jQuery loaded dynamically");
+	}
+}
+checkRequirements();
 function Generator(arguments,custom_object){
 	var code='';
 	var val=function(o){
