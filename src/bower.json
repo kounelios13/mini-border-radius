@@ -5,7 +5,7 @@
     "kounelios13 <pkounelios@gmail.com>"
   ],
   "description": "Add a mini border radius generator to your website",
-  "main": "../index.html",
+  "main": "../js/miniBorderRadius.js",
   "moduleType": [],
   "keywords": [
     "css3"
