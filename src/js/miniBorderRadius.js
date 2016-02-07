@@ -20,8 +20,11 @@ function checkRequirements(){
     	var js=document.createElement("script");
     	js.type="text/javascript";
     	js.src="http://code.jquery.com/jquery-2.2.0.min.js";
-    	head.appendChild(js);
+    	head.insertBefore(js, head.firstChild);
     	log("jQuery loaded dynamically");
+	}
+	else{
+		log("jQuery found.You are ready to go");
 	}
 }
 checkRequirements();
