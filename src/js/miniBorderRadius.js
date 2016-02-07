@@ -8,7 +8,7 @@ function log(o){
 }
 function isChainable(name){
 	name=name[0]=='.'?name.slice(1).split("(")[0]:name.split("(")[0];//remove '.' and "(" and ")"
-	var chain={"init":true,"activateGenerator":true,"deactivateGenerator":true,"replaceObject":true,"reset":true,
+	var chain={"init":true,"activateGenerator":true,"deactivateGenerator":true,"destroyGenerator":false,"replaceObject":true,"reset":true,
 	"setSize":true,"setBackground":true,"setMax":true,
 	"getId":false,"getCode":false,"getOptions":false};
 	return chain[name] != undefined ?chain[name]:false;//if the key does not exist in the above dictionary return  false else return its value
