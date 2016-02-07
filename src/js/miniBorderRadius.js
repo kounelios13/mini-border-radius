@@ -119,6 +119,9 @@ function Generator(arguments,custom_object){
 		});
 		return this;//return the whole function so as to be chainable
 	};
+	this.activate=function(){
+		return this.activateGenerator();
+	};
 	this.deactivateGenerator=function(){
 		//Create a reference to the current generator instance
 		var gen=this;
@@ -131,6 +134,13 @@ function Generator(arguments,custom_object){
 			$(gen.getId()).off();//Unregister any event listeners attached to the generator
 		});
 		return this;//return the whole function so as to be chainable
+	};
+	this.deactivate=function(){
+		return this.deactivateGenerator();
+	};
+	this.destroyGenerator=function(){
+		//Warning!!!There is no going back
+
 	};
 	this.replaceObject=function(object,restrict_size){
 		if(!object || object[0]=='.' || object[0] != "#")
