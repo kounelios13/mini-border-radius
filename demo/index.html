@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Mini Border Radius</title>
+  <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.6/cerulean/bootstrap.min.css" rel="stylesheet" integrity="sha256-Ucf/ylcKTNevYP6l7VNUhGLDRZPQs1+LsbbxuzMxUJM= sha512-FW2XqnqMwERwg0LplG7D64h8zA1BsxvxrDseWpHLq8Dg8kOBmLs19XNa9oAajN/ToJRRklfDJ398sOU+7LcjZA==" crossorigin="anonymous">
+  <link rel="stylesheet" href="css/demo.css">
+  <link rel="stylesheet" href="css/miniBorderRadius.css">
+  <script src="http://code.jquery.com/jquery-2.2.0.min.js"></script>
+  <script src="C:\Users\manos_000\Documents\GitHub\mini-border-radius\src\js\miniBorderRadius.js"></script>
+  <script src="js/demo.js"></script>
+</head>
+<body>
+  <div class="container">
+    <div class="jumbotron">
+      <h1>
+        <div class="text-center text-info">Mini Border Radius</div>
+      </h1>
+    
+    </div>
+      <h2 class="text-info">Menu</h2>
+     <ul class="list-group" id="menu">
+       <li class="list-group-item"><a href="#chapter_1">What is mini border radius</a></li>
+       <li class="list-group-item"><a href="#chapter_2">How do I install it</a></li>
+       <li class="list-group-item"><a href="#chapter_3">Dependencies</a></li>
+       <li class="list-group-item"><a href="#chapter_4">So now what?</a></li>
+       <li class="list-group-item"><a href="#chapter_5">Wait.Nothing happened.</a></li>
+       <li class="list-group-item"><a href="#chapter_6">Generator methods</a></li>
+     </ul>
+      <!-- #chapters>(#chapter_$h1.text-info+p)*8 -->
+      <div id="chapters">
+        <h1 class="text-info">What is mini border radius</h1>
+        <p id="chapter_1">Mini border radius is a small javascript plugin written in Jquery that allows you to add one or more border radius generator in a web page or in a web app and it is free .</p>
+        <h1 class="text-info">How do I install it</h1>
+        <p id="chapter_2">
+          Installation is not that hard.All you have to do is to include the following tags in your html file:
+          <ul class="list-group">
+            <li class="list-group-item"><code>&lt;script src="path/to/miniBorderRadius.js"&gt;&lt;/script&gt;</code></li>
+            <li class="list-group-item"><code>&lt;link rel="stylesheet" href="path/to/miniBorderRadius.css"&gt;</code></li>
+          </ul>
+        </p>
+        <h1 class="text-info">Dependencies</h1>
+        <p id="chapter_3">
+          Since this plugin is written in jQuery you need to have jQuery in your web page.Also this plugin some bootstrap css components you need to also have bootstrap in your webpage
+        </p>
+        <h1 class="text-info">So now what?</h1>
+        <p id="chapter_4">
+          So you installed mini border radius.Right?Well there are a few things left to do.Each generator needs its own div to live on.So to create a new generator you have to do it like this: <br>
+          <code>
+            var generator;
+            <br>
+            <code>
+              $(document).ready(function(){ <br>
+                  generator = new Generator("#sample"); <br>
+              });
+              </code>
+          </code>
+          <br> 
+           <strong>Beware that you have to create the generator inside the <code>ready()</code> function.</strong> <br>
+           <div id="create_generator" class="btn btn-primary">Create a generator.</div>
+           <div id="sample"></div>
+           Instead of using the id of the host-parent div you can pass a list of 5 elements in the constructor like this: <code>generator=new Generator([host_div_id,height,width,max_value,bg_color]);</code>
+            <p>Now the first parameter of the list is the id of the host-parent div.The next 2 parameters determine the size of the generator in the page.The fourth value determines the max value for the sliders inside the generator and the last one determines the background color of the generator.There is also a third constructor(3rd way to create a generator) which takes 2 arguments.The first one can be the id of the host-parent div or it can be a list like the previous list.The second one parameter is the id of an existing object in your page.What is this object?This object is going to replace the default object that the generator uses to apply the border-radius property.Example:
+            <br>
+            <code>
+              generator=new Generator([host_div_id,height,width,max_value,bg_color],"#image"); <br>
+            </code>          
+            Let me tell you what the above code does.It look for an html element with the id "#image".It removes it from where it is and it replaces the default object used by the generator with this element.
+        </p>
+        <h1 class="text-info">Wait.Nothing happened.</h1>
+        <p id="chapter_5">So you have followed all the instructions up to here only to see that the generator is visible in your page but it is not working.This is absolutely normal.Creating a generator does not mean that is active.To activate generator you have to write the following code:
+          <code>generator.activateGenerator();</code> and then you are ready to go.
+          <span id="activate_generator" class="btn btn-info">Activate generator</span>
+        </p>
+        <h1 class="text-info">Generator methods</h1>
+        <p id="chapter_6">Each generator has some methods:</p>
+        <div class="btn btn-info" onclick="$('#generator_methods').toggle(800)">Toggle Methods</div>
+        <div id="generator_methods">
+          <div class="panel panel-info">
+            <div class="panel-heading">.activateGenerator()</div>
+            <div class="panel-body">This is the main function that activates the generator.Chainable:Yes.</div>
+          </div>
+          <div class="panel panel-info">
+            <div class="panel-heading">.deactivateGenerator()</div>
+            <div class="panel-body">This function resets and deactivates the generator so before executing that method be sure you have saved somewhere the code produced by the generator.Chainable:Yes.</div>
+          </div>
+          <div class="panel panel-info">
+            <div class="panel-heading">.reset()</div>
+            <div class="panel-body">Resets any slider inside a generator and set the border radius property of the object used by the generator to 0.Chainable:Yes</div>
+          </div>
+          <div class="panel panel-info">
+            <div class="panel-heading">.setMax(value)</div>
+            <div class="panel-body">Sets the max value for all the sliders inside a generator. Chainable:Yes</div>
+          </div>
+          <div class="panel panel-info">
+            <div class="panel-heading">.setBackground(color)</div>
+            <div class="panel-body">Sets the background color of a generator.Chainable:Yes</div>
+          </div>
+          <div class="panel panel-info">
+            <div class="panel-heading">.init(options)</div>
+            <div class="panel-body">This function accepts a list of 4 default options:height,width,max_value,default_background.Chainable:Yes</div>
+          </div>
+          <div class="panel panel-info">
+            <div class="panel-heading">.getCode()</div>
+            <div class="panel-body">Gets the code generated from a miniRadiusGenerator.Chainable:No</div>
+          </div>
+          <div class="panel panel-info">
+            <div class="panel-heading">.getOptions()</div>
+            <div class="panel-body">Returns a list with the default options of the generator.Chainable:No</div>
+          </div>
+          <div class="panel panel-info">
+            <div class="panel-heading">.getId()</div>
+            <div class="panel-body">Returns the id of the host div.Chainable:No</div>
+          </div>
+        </div>
+      </div>
+  </div>
+</body>
+</html>

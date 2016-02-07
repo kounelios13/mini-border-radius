@@ -1,0 +1,17 @@
+body{
+	background: rgb(128,12,11);
+}
+#chapters p{
+	display: block;
+	font-size: 19px;
+	color: rgba(244,244,244,.9);
+	text-align: justify;
+	max-width: 69pc;
+}
+code pre,pre code{
+	padding: 2px 4px;
+    font-size: 110%;
+    color: #c7254e;
+    background-color: #f9f2f4;
+    border-radius: 4px;
+}
