@@ -1,7 +1,7 @@
 /*
 	Author:kounelios13
 	Licensed under MIT
-	miniRadius generator 2016
+	miniBorderRadius 2016
 */
 function log(o){
 	console.log(o);
