@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Mini border radius generator</title>
+	<link rel="stylesheet" href="src/bower_components/bootstrap/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="src/css/miniBorderRadius.css">
+	<script src='src/bower_components/jquery/dist/jquery.min.js'></script>
+	<script src="src/js/miniBorderRadius.js"></script>
+	<script src="src/js/demo.js"></script>
+	<style>
+	body{
+		background: rgb(69,109,221);
+	}
+	.more_generators{
+		display: none;	
+	}
+	p{
+		font-size: 17px;
+	}
+	.rep{
+		height: 14em;
+		width: 14em;
+		background: gold;
+		margin: auto;
+	}
+	#demo_object_1{
+		height: 20em;
+		width: 20em;
+		border:3px solid dodgerblue;
+		background: aliceblue;
+	}
+	#image{
+		display: block;
+		height: 20em;
+		width: 20em;
+		margin: auto;
+	}
+	</style>
+</head>
+<body>
+	<div id="setup_instructions" class="container">
+		<h1>
+			<em>What is miniBorderRadius?</em>
+		</h1>
+		<p>
+			miniBorderRadius is a plugin written mostly in jQuery which can add a border radius generator in your web page.
+		</p>
+		<h1>
+			<em>How to install?</em>
+		</h1>
+		<p>
+			It's pretty simple.All you have is to invlude the following files in your html:
+			<br>
+			<code> 
+				&lt;script src="path/to/miniBorderRadius.js"/&gt;
+			</code> 
+				<br>
+			<code> 
+				&lt;link rel='stylesheet' href='path/to/miniBorderRadius.css'/&gt;
+			</code>
+		</p>
+		<h1>
+			<em>Dependencies?</em>
+		</h1>
+		<p>
+			This plugin is written in jQuery but is also using some bootstrap components so here are what you need in your project:</p>
+			<ul class="list-group">
+				<li class="list-group-item">jQuery</li>
+				<li class="list-group-item">twittwer bootstrap</li>
+			</ul>
+		<h1>
+			<em>So now what?</em>
+		</h1>
+		<p class="text-justify">
+			Now that you have included all relevant files there are a few things you need to do.
+			Each generator(yeap you can have unlimited generators in a single page) lives in it's own div.To initiate and activate a generator you have to create an instance of the Generator class and provide it with th id of the host div like this: <br>
+			 	<code>
+				 	var generator; <br>
+				 	$(document).ready(function(){ <br>
+				 		generator = new Generator("#sample");<br>
+						//for some reason you have to initiate the generator <br>	
+						//inside the ready() function.Hope to have this fixed in a future release though.
+				 	<br>});<br>
+				 </code>
+			Instead of using the id of the host div as an argument you can pass an array of default options like this: <br>
+			<code>
+				generator=new Generator(["#sample","10em","10em",200,"maroon"]);	
+			</code>
+			Now let me explain what this list is.The first item of the list is the id of the host div.The second and the third is the height and the width of the generetor.The fourth value is the max value for the sliders of the generator.And the fifth item is the background of the generator.There is also a third constructor which consists of 2 parameters.The first parameter can be a string or a list as the previous 2 constructors.The second parameter is the new object that will be replacing your current generator output object.For example: <code>generator=new Generator("#sample","#image")</code>. <span class="btn btn-primary" onclick="gen.replaceObject('#image')">Try the above code</span>
+		</p>
+		<h1>
+			<em>Wait.nothing happend</em>
+		</h1>
+		<p class="text-justify">
+			Yeap.You are absolutely right.Nothing is happening because we havent activated the generator. We can do it like this: <code>generator.activateGenerator();</code> 
+			Of course you could get rid of this by doing the following:
+			<code>
+				generator=new Generator("#sample").activateGenerator();
+			</code>
+			<br>
+			<span id="bind_move" class="btn btn-primary">
+				Press me to activate generator
+			</span>				
+		</p>
+		<h1>
+			<em>How many of them?</em>
+		</h1>
+		<p>You can have as many generators as you want.You just have to create a seperate div with a unique id for each generator you want to add.Each generator is unique and independent from each other.</p>
+		<a href="#generators" class="btn btn-info" onclick="$('.more_generators').show(800)">Show me more generators</a>
+	</div>
+	<div id="sample"  class="container">
+		
+	</div>
+	<div class="container">
+		<h1>
+			<em>Generator methods</em>
+		</h1>
+		<p>Each generator has some basic methods.Here are:</p>
+		<div class="btn btn-info" onclick="$('#generator_methods').toggle(980)">Toggle methods</div>
+	</div>
+	<div class="container" id="generator_methods">
+		<div class="panel panel-info">
+			<div class="panel-heading">.actvateGenerator()</div>
+			<div class="panel-body">This is the main function that activates the generator.Chainable:Yes</div>
+		</div>
+		<div class="panel panel-info">
+			<div class="panel-heading">.deactvateGenerator()</div>
+			<div class="panel-body">This function resets the generator and then deactivates it so be sure you got the code from the generator before deactivating it.Chainable:Yes</div>
+		</div>
+		<div class="panel panel-info">
+			<div class="panel-heading">.reset()</div>
+			<div class="panel-body">Reset the values of the generator.Chainable:Yes</div>
+		</div>
+		<div class="panel panel-info">
+			<div class="panel-heading">.replaceObject(object,restrict_size)</div>
+			<div class="panel-body">Replace the default object where border radius is applied with another one.If you want to keep the new object to have the same size as the previous one pass true as the second parameter in the function .Chainable:Yes</div>
+		</div>
+		<div class="panel panel-info">
+			<div class="panel-heading">.setSize(height,width)</div>
+			<div class="panel-body">Does what it says :p</div>
+		</div>
+		<div class="panel panel-info">
+			<div class="panel-heading">.setMax(value)</div>
+			<div class="panel-body">Set the maximum value for all the sliders inside a generator.Chainable:Yes</div>
+		</div>
+		<div class="panel panel-info">
+			<div class="panel-heading">.setBackground(color)</div>
+			<div class="panel-body">set the background color of a generator.Chainable:Yes</div>
+		</div>
+		<div class="panel panel-info">
+			<div class="panel-heading">.init(options)</div>
+			<div class="panel-body">This function accepts a list of 4 default options:height,width,max_value,default_background.Chainable:Yes</div>
+		</div>
+		<div class="panel panel-info">
+			<div class="panel-heading">.getCode()</div>
+			<div class="panel-body">Gets the code generated from a miniRadiusGenerator.Chainable:No</div>
+		</div>
+		<div class="panel panel-info">
+			<div class="panel-heading">.getOptions()</div>
+			<div class="panel-body">Returns a list with the default options of the generator.Chainable:No</div>
+		</div>
+		<div class="panel panel-info">
+			<div class="panel-heading">.getId()</div>
+			<div class="panel-body">Returns the id of the host div.Chainable:No</div>
+		</div>
+		<p>
+			If you don't remember wheter a function is chainable or not you can call  isChainable(name) and pass teh name of the function you want to check.You will get a true or false.For example the following: <code>console.log(isChainable("init")) ;</code> will log true because init function is chainable.You will get the same output if you write <code>console.log(isChainable(".init"));</code> or <code>console.log(isChainable(".init()"));</code>.
+		</p>
+	</div>
+	<div id="generators">
+		<div id="sample2" class="container more_generators"></div>
+		<div id="sample3" class="container more_generators"></div>
+		<div id="sample4" class="container more_generators"></div>	
+	</div>
+	
+	<div id="demo_object_1" class="rep"></div>
+	<div id="demo_object_2" class="rep"></div>
+	<div id="demo_object_3" class="rep"></div>
+	<img src="http://www.unoosa.org/res/timeline/index_html/space-2.jpg" alt="" id="image">
+</body>
+</html>
