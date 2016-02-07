@@ -1,11 +1,11 @@
 {
   "name": "mini border radius",
-  "homepage": "https://github.com/kounelios13/mini-border-radius",
+  "homepage": "kounelios13.github.io/mini-border-radius",
   "authors": [
     "kounelios13 <pkounelios@gmail.com>"
   ],
   "description": "Add a mini border radius generator to your website",
-  "main": "../index.html",
+  "main": "../js/miniBorderRadius.js",
   "moduleType": [],
   "keywords": [
     "css3"
