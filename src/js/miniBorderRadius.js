@@ -73,19 +73,19 @@ function Generator(arguments,custom_object){
 	//detect if the argument passed to the function is a string or an array-list
 
 	if(typeof arguments == 'string'){
-		this.app_container_id=arguments==""?"body":arguments;
+		gen.app_container_id=arguments==""?"body":arguments;
 	}
 	else{
-		this.app_container_id=arguments[0];
-		this.options=arguments.slice(1);//remove the id of the host container and return the remaining items of the list(height,width,max_value,bg)	
+		gen.app_container_id=arguments[0];
+		gen.options=arguments.slice(1);//remove the id of the host container and return the remaining items of the list(height,width,max_value,bg)	
 	}
 	//Mind the order
 	//First append and then call init()
-	$(this.app_container_id).append(this.generator_markup);
-	if(this.custom_object != ".generatorOutput");
-		$(this.app_container_id+" .generatorOutput").replaceWith($(this.custom_object));
-	this.init(this.options);
-	this.sliders=$(this.app_container_id+" .radius_slider");
+	$(gen.app_container_id).append(gen.generator_markup);
+	if(gen.custom_object != ".generatorOutput");
+		$(gen.app_container_id+" .generatorOutput").replaceWith($(gen.custom_object));
+	gen.init(gen.options);
+	gen.sliders=$(gen.app_container_id+" .radius_slider");
 	this.getCode=function(){
 		return gen.code;
 	};
@@ -121,12 +121,6 @@ function Generator(arguments,custom_object){
 		return gen;//return the object that called the function
 	};
 	this.deactivateGenerator=function(){
-		//Create a reference to the current generator instance
-		var gen=this;
-		//Now we have a reference to the current generator we can use it
-		//inside .ready() function
-		//because if we use 'this' keyword inside .ready() function
-		//we are not making a reference to the generator object but to the jQuery object
 		$(document).ready(function(){
 			gen.reset();//First reset the generator 
 			$(gen.getId()).off();//Unregister any event listeners attached to the generator
@@ -135,20 +129,14 @@ function Generator(arguments,custom_object){
 	};
 	this.destroyGenerator=function(){
 		//Warning!!!There is no going back
-		var del=confirm("Are you sure you wanna destroy the geenrator?");
-		if(del){
-			$(this.getId()+" .generatorContainer").remove();
-			$(this.getId()+" .panel").remove();
-			log("Generator destroyed");
-		}
-		else
-			alert("Operation aborted");
+			$(gen.getId()+" .generatorContainer").remove();
+			$(gen.getId()+" .panel").remove();
 	};
 	this.replaceObject=function(object,restrict_size){
 		if(!object || object[0]=='.' || object[0] != "#")
 			throw new Error(!object?"Invalid object detected":"Class detected.Please switch to an object with id insted of class");
 		$(object).addClass("center-block");
-		$(gen.getId()+" "+this.custom_object).replaceWith($(object));//fine up to here
+		$(gen.getId()+" "+gen.custom_object).replaceWith($(object));//fine up to here
 		gen.custom_object=object;
 		if(!restrict_size)
 			gen.options=[$(object).css("height"),$(object).css("width"),gen.options[2],$(object).css("background")];
