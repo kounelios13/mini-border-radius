@@ -130,6 +130,7 @@ function Generator(arguments,custom_object){
 	this.destroyGenerator=function(){
 		//Warning!!!There is no going back
 		//go to hell
+		//sorry
 			$(gen.getId()+" .generatorContainer").remove();
 			$(gen.getId()+" .panel").remove();
 	};
