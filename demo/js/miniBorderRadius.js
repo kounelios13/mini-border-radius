@@ -8,11 +8,26 @@ function log(o){
 }
 function isChainable(name){
 	name=name[0]=='.'?name.slice(1).split("(")[0]:name.split("(")[0];//remove '.' and "(" and ")"
-	var chain={"init":true,"activateGenerator":true,"deactivateGenerator":true,"replaceObject":true,"reset":true,
+	var chain={"init":true,"activateGenerator":true,"deactivateGenerator":true,"destroyGenerator":false,"replaceObject":true,"reset":true,
 	"setSize":true,"setBackground":true,"setMax":true,
 	"getId":false,"getCode":false,"getOptions":false};
 	return chain[name] != undefined ?chain[name]:false;//if the key does not exist in the above dictionary return  false else return its value
 }
+function checkRequirements(){
+	if (typeof jQuery == 'undefined') {  
+    	// jQuery is not  loaded.Add it
+    	var head = document.getElementsByTagName("head")[0];
+    	var js=document.createElement("script");
+    	js.type="text/javascript";
+    	js.src="http://code.jquery.com/jquery-2.2.0.min.js";
+    	head.insertBefore(js, head.firstChild);
+    	log("jQuery loaded dynamically");
+	}
+	else{
+		log("jQuery found.You are ready to go");
+	}
+}
+checkRequirements();
 function Generator(arguments,custom_object){
 	var code='';
 	var val=function(o){
@@ -110,7 +125,8 @@ function Generator(arguments,custom_object){
 		//we are not referencing to the generator object but to the jQuery object
 		$(document).ready(function(){
 			var host_div=gen.getId();
-			$(host_div).on("mousemove",'.radius_slider',function(){
+			$(host_div).on("mousemove touchmove",'.radius_slider',function(){
+				//touchmove is needed for touch screens
 				gen.code=val(gen.sliders[0])+"px "+val(gen.sliders[1])+"px "+val(gen.sliders[2])+"px "+val(gen.sliders[3])+"px";
 				$(host_div+" .border_radius_code_output").text(gen.code);
 				$(host_div+" "+gen.custom_object).css("border-radius",gen.code);
@@ -118,9 +134,6 @@ function Generator(arguments,custom_object){
 			//attach an event handler
 		});
 		return this;//return the whole function so as to be chainable
-	};
-	this.activate=function(){
-		return this.activateGenerator();
 	};
 	this.deactivateGenerator=function(){
 		//Create a reference to the current generator instance
@@ -135,12 +148,17 @@ function Generator(arguments,custom_object){
 		});
 		return this;//return the whole function so as to be chainable
 	};
-	this.deactivate=function(){
-		return this.deactivateGenerator();
-	};
 	this.destroyGenerator=function(){
 		//Warning!!!There is no going back
-
+		//alert("Sorry but this function is still in progrss");
+		var del=confirm("Are you sure you wanna destroy the geenrator?");
+		if(del){
+			$(this.getId()+" .generatorContainer").remove();
+			$(this.getId()+" .panel").remove();
+			log("Generator destroyed");
+		}
+		else
+			alert("Operation aborted");
 	};
 	this.replaceObject=function(object,restrict_size){
 		if(!object || object[0]=='.' || object[0] != "#")
