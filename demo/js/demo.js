@@ -3,8 +3,7 @@ var activated = false;
 $(document).ready(function(){
 	$("#create_generator").on("click",function(){
 		generator=new Generator("#sample");
-		$(this).text("Activate generator.")
-		$(this).prop("id","activate_generator");
+		
 	});
 	$("#activate_generator").on("click",function(){
 		if(!activated){
