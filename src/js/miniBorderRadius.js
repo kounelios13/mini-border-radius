@@ -125,7 +125,8 @@ function Generator(arguments,custom_object){
 		//we are not referencing to the generator object but to the jQuery object
 		$(document).ready(function(){
 			var host_div=gen.getId();
-			$(host_div).on("mousemove",'.radius_slider',function(){
+			$(host_div).on("mousemove touchmove",'.radius_slider',function(){
+				//touchmove is needed for touch screens
 				gen.code=val(gen.sliders[0])+"px "+val(gen.sliders[1])+"px "+val(gen.sliders[2])+"px "+val(gen.sliders[3])+"px";
 				$(host_div+" .border_radius_code_output").text(gen.code);
 				$(host_div+" "+gen.custom_object).css("border-radius",gen.code);
