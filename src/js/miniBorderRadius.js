@@ -149,3 +149,4 @@ function Generator(arguments,custom_object){
 	};
 }
 	
+	
