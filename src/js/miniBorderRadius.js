@@ -146,7 +146,7 @@ function Generator(arguments,custom_object){
 			gen.reset();//First reset the generator 
 			$(gen.getId()).off();//Unregister any event listeners attached to the generator
 		});
-		return this;//return the whole function so as to be chainable
+		return this;//return the object that called the function to be able to chain functions
 	};
 	this.destroyGenerator=function(){
 		//Warning!!!There is no going back
@@ -171,7 +171,7 @@ function Generator(arguments,custom_object){
 		else
 			this.options=[this.options[0],this.options[1],this.options[2],$(object).css("background")];
 		this.init(this.options);
-		return this;
+		return this;//return the whole function so as to be chainable
 	};
 }
 	
