@@ -94,3 +94,6 @@ input[type="range"].radius_slider::-ms-thumb {
 	.panel{
 		margin-top: 2em;
 	}
+	.favourites{
+ 		margin-top: 2em;
+	}
