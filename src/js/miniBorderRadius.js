@@ -9,11 +9,12 @@ function log(o){
 function isChainable(name){
 	name=name[0]=='.'?name.slice(1).split("(")[0]:name.split("(")[0];//remove '.' and "(" and ")"
 	var chain={"init":true,"activateGenerator":true,"deactivateGenerator":true,"destroyGenerator":false,"replaceObject":true,"reset":true,
-	"setSize":true,"setBackground":true,"setMax":true,
-	"getId":false,"getCode":false,"getOptions":false};
+		"setSize":true,"setBackground":true,"setMax":true,
+		"getId":false,"getCode":false,"getOptions":false,"getFavourites":false,"toggleFavourites":true
+		"removeFavourites":true,"addToFavourites":true,"showFavourites":true
+	};
 	return chain[name] != undefined ?chain[name]:false;//if the key does not exist in the above dictionary return  false else return its value
 }
-
 function Generator(arguments,custom_object){
 	var gen=this;//create self reference
 	var code='';
@@ -23,6 +24,7 @@ function Generator(arguments,custom_object){
 	this.custom_object=custom_object||".generatorOutput";
 	this.options=["10em","10em",100,"maroon"];
 	this.sliders=[];
+	this.favourites=[];
 	this.generator_markup="<div class='generatorContainer'>\n";
 	this.generator_markup+="<input type='range' class='radius_slider' id='top_left_corner' min='0' max='100' value='0'>\n";
 	this.generator_markup+="<input type='range' class='radius_slider' id='top_right_corner' min='0' max='100' value='0'>\n";
@@ -30,7 +32,8 @@ function Generator(arguments,custom_object){
 	this.generator_markup+="<input type='range' class='radius_slider' id='bottom_right_corner' min='0' max='100' value='0'>\n";
 	this.generator_markup+="<input type='range' class='radius_slider' id='bottom_left_corner' min='0' max='100' value='0'></div>\n";
 	this.generator_markup+="<div class='panel panel-primary'>\n<div class='panel-body text-center bg-success'>";
-	this.generator_markup+="border-radius: <span class='border_radius_code_output'>0px 0px 0px 0px</span>;\n</div></div>";
+	this.generator_markup+="border-radius: <span class='border_radius_code_output'>0px 0px 0px 0px</span>;\n</div>";
+	this.generator_markup+="</div><ul class='list-group favourites'></ul>\n</div>";
 	this.setSize=function(height,width){
 		gen.options[0]=height;
 		gen.options[1]=width;
@@ -138,15 +141,35 @@ function Generator(arguments,custom_object){
 		if(!object || object[0]=='.' || object[0] != "#")
 			throw new Error(!object?"Invalid object detected":"Class detected.Please switch to an object with id insted of class");
 		$(object).addClass("center-block");
-		$(gen.getId()+" "+gen.custom_object).replaceWith($(object));//fine up to here
+		$(gen.getId()+" "+gen.custom_object).replaceWith($(object));
 		gen.custom_object=object;
 		if(!restrict_size)
 			gen.options=[$(object).css("height"),$(object).css("width"),gen.options[2],$(object).css("background")];
 		else
 			gen.options=[gen.options[0],gen.options[1],gen.options[2],$(object).css("background")];
 		gen.init(gen.options);
-		return gen;//return the whole function so as to be chainable
+		return gen;//return the object that called the function
+	};
+	this.addToFavourites=function(){
+		if(gen.favourites.indexOf(gen.code)==-1 && gen.code != undefined)
+			gen.favourites.push(gen.code);
+		else
+			return gen;//the code exists so exit the function
+		//buggy function lol someboy fix this shit
+		$(gen.getId()+" ul.favourites").append("<li class='generator_favourites list-group-item'>border-radius:"+gen.code+";</li>");
+		return gen;
+	};
+	this.getFavourites=function(){
+		return gen.favourites;
+	};
+	this.toggleFavourites=function(speed){
+		$(gen.getId()+" .generatorContainer .favourites").toggle(!speed?800:speed);
+		return gen;
+	};
+	this.removeFavourites=function(){
+		gen.favourites.length=0;
+		$(gen.getId()+" .favourites li").remove();
+		return gen;
 	};
 }
-	
 	
