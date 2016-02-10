@@ -30,6 +30,8 @@ Returns favourites list.Chainable:No
 Removes favourites.Chainable:Yes
 ##.toggleFavourites()
 Toggle the list of favourites created by the current generator.Chainable:Yes
+##.enablePreview()
+When you execute this method you are able to preview any border radius in your current favourites list just by clicking it.Chainable:Yes
 <<<<<<< HEAD
 If you want to know wheter a method is chaiable you can call the isChainable() function and pass the name of the method as an argument and you will get true or false.
 For example: isChainable("activateGenerator") will return true
