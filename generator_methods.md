@@ -24,7 +24,12 @@ Gets the code generated from a miniRadiusGenerator.Chainable:No
 Returns the id of the host div.Chainable:No
 ##.addToFavourites()
 Adds the curent code produced by the generator into a list.Chainable:Yes
-##
+##.getFavourites()
+Returns favourites list.Chainable:No
+##.removeFavourites()
+Removes favourites.Chainable:Yes
+##.toggleFavourites()
+Toggle the list of favourites created by the current generator.Chainable:Yes
 <<<<<<< HEAD
 If you want to know wheter a method is chaiable you can call the isChainable() function and pass the name of the method as an argument and you will get true or false.
 For example: isChainable("activateGenerator") will return true
