@@ -12,7 +12,7 @@ function isChainable(name){
 	var chain={"init":true,"activateGenerator":true,"deactivateGenerator":true,"destroyGenerator":false,"replaceObject":true,"reset":true,
 		"setSize":true,"setBackground":true,"setMax":true,
 		"getId":false,"getCode":false,"getOptions":false,"getFavourites":false,"toggleFavourites":true,
-		"removeFavourites":true,"addToFavourites":true
+		"removeFavourites":true,"addToFavourites":true,"enablePreview":true
 	};
 	return chain[name] != undefined ?chain[name]:false;//if the key does not exist in the above dictionary return  false else return its value
 }
@@ -49,21 +49,22 @@ function Generator(args,custom_object){
 		return gen;
 	};
 	gen.setMax=function(value){
-		/*if(abs(value)<$(gen.sliders[0]).prop("max")){
+		function abs(a){return Math.abs(a);}
+		if(abs(value)<$(gen.sliders[0]).prop("max")){
 			var old=$(gen.sliders[0]).prop("max");
-			gen.code=old+"px "+old+"px "+old+"px "+old+"px";
+			gen.code=abs(value)+"px "+abs(value)+"px "+abs(value)+"px "+abs(value)+"px";
 			$(gen.app_container_id+" .border_radius_code_output").text(gen.code);
 			$(gen.getId()+" "+gen.custom_object).css("border-radius",gen.code);	
-		}*/
+		}
 		for(var x=0,max=gen.sliders.length;x<max;x++)
 			try{
 				//Even if the use enters a negative value there won't be any problem since Math.abs will allways return a possitive value
-				$(sliders[x]).prop("max",Math.abs(value));
+				$(gen.sliders[x]).prop("max",Math.abs(value));
 				gen.options[2]=Math.abs(value);
 			}
 			catch(e){
 				//That does not mean we want to let the user enter a non numerical value
-				throw new Error("The value entered is not a number!!! "+ typeof value );			
+				throw new Error("(T)error occured:"+e );			
 			}
 		return gen;
 	};
@@ -92,6 +93,7 @@ function Generator(args,custom_object){
 	}
 	//Mind the order
 	//First append and then call init()
+
 	$(gen.app_container_id).append(gen.generator_markup);
 	if(gen.custom_object != ".generatorOutput");
 		$(gen.app_container_id+" .generatorOutput").replaceWith($(gen.custom_object));
@@ -115,10 +117,8 @@ function Generator(args,custom_object){
 		return gen;
 	};
 	gen.activateGenerator=function(){
-		//Now we have a reference to the current generator we can use it
-		//inside .ready() function
-		//because if we use 'gen' keyword inside .ready() function
-		//we are not referencing to the generator object but to the jQuery object
+		//In order to be able to manipulate DOM properties such as the border radius of an object 
+		//in real time we have to attach an eventListener
 		$(document).ready(function(){
 			var host_div=gen.getId();
 			$(host_div).on("mousemove touchmove",'.radius_slider',function(){
@@ -127,7 +127,6 @@ function Generator(args,custom_object){
 				$(host_div+" .border_radius_code_output").text(gen.code);
 				$(host_div+" "+gen.custom_object).css("border-radius",gen.code);
 			});
-			//attach an event handler
 		});
 		return gen;//return the object that called the function
 	};
@@ -172,7 +171,7 @@ function Generator(args,custom_object){
 	gen.getFavourites=function(){
 		return gen.favourites;
 	};
-	gen.toggleFavourites=function(speed){
+	gen.toggleFavourites=function(){
 		var x=$(gen.getId()+"  .list-group");
 		$(gen.getId()+"  .favourites li").toggle(800);
 		return gen;
@@ -182,15 +181,19 @@ function Generator(args,custom_object){
 		$(gen.getId()+" .favourites li").remove();
 		return gen;
 	};
-	$(document).ready(function(){
-		$("body").on("click",gen.getId()+" li",function(){
-			var values=$(this).text().match(/\d+/g);
-			for(var i=0;i<4;i++)
-				$(gen.sliders[i]).val(values[i]);
-			gen.code=$(this).text().split(":")[1].split(';')[0];
-			$(gen.getId()+" "+gen.custom_object).css("border-radius",gen.code);
-			$(gen.getId()+" .border_radius_code_output").text(gen.code);
+	gen.enablePreview=function(){
+		$(document).ready(function(){
+			$("body").on("click",gen.getId()+" li",function(){
+				var values=$(this).text().match(/\d+/g);
+				for(var i=0;i<4;i++)
+					$(gen.sliders[i]).val(values[i]);
+				gen.code=$(this).text().split(":")[1].split(';')[0];
+				$(gen.getId()+" "+gen.custom_object).css("border-radius",gen.code);
+				$(gen.getId()+" .border_radius_code_output").text(gen.code);
+			});
 		});
-	});
+		return gen;
+	};
+	
 }
 	
