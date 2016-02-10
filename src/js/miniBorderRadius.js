@@ -12,43 +12,50 @@ function isChainable(name){
 	var chain={"init":true,"activateGenerator":true,"deactivateGenerator":true,"destroyGenerator":false,"replaceObject":true,"reset":true,
 		"setSize":true,"setBackground":true,"setMax":true,
 		"getId":false,"getCode":false,"getOptions":false,"getFavourites":false,"toggleFavourites":true,
-		"removeFavourites":true,"addToFavourites":true,"showFavourites":true
+		"removeFavourites":true,"addToFavourites":true
 	};
 	return chain[name] != undefined ?chain[name]:false;//if the key does not exist in the above dictionary return  false else return its value
 }
 function Generator(args,custom_object){
-	var gen=this;//create self reference
+	//to avoid using 'this' all the time we create a self reference
+	//and we use it
+	var gen=this;
 	var code='';
 	var val=function(o){
 		return $(o).val();
 	}
-	this.custom_object=custom_object||".generatorOutput";
-	this.options=["10em","10em",100,"maroon"];
-	this.sliders=[];
-	this.favourites=[];
-	this.generator_markup="<div class='generatorContainer'>\n";
-	this.generator_markup+="<input type='range' class='radius_slider' id='top_left_corner' min='0' max='100' value='0'>\n";
-	this.generator_markup+="<input type='range' class='radius_slider' id='top_right_corner' min='0' max='100' value='0'>\n";
-	this.generator_markup+="<div class='generatorOutput'></div>\n";
-	this.generator_markup+="<input type='range' class='radius_slider' id='bottom_right_corner' min='0' max='100' value='0'>\n";
-	this.generator_markup+="<input type='range' class='radius_slider' id='bottom_left_corner' min='0' max='100' value='0'></div>\n";
-	this.generator_markup+="<div class='panel panel-primary'>\n<div class='panel-body text-center bg-success'>";
-	this.generator_markup+="border-radius: <span class='border_radius_code_output'>0px 0px 0px 0px</span>;\n</div>";
-	this.generator_markup+="</div><ul class='list-group favourites'></ul>\n</div>";
-	this.setSize=function(height,width){
+	gen.custom_object=custom_object||".generatorOutput";
+	gen.options=["10em","10em",100,"maroon"];
+	gen.sliders=[];
+	gen.favourites=[];
+	gen.generator_markup="<div class='generatorContainer'>\n";
+	gen.generator_markup+="<input type='range' class='radius_slider' id='top_left_corner' min='0' max='100' value='0'>\n";
+	gen.generator_markup+="<input type='range' class='radius_slider' id='top_right_corner' min='0' max='100' value='0'>\n";
+	gen.generator_markup+="<div class='generatorOutput'></div>\n";
+	gen.generator_markup+="<input type='range' class='radius_slider' id='bottom_right_corner' min='0' max='100' value='0'>\n";
+	gen.generator_markup+="<input type='range' class='radius_slider' id='bottom_left_corner' min='0' max='100' value='0'></div>\n";
+	gen.generator_markup+="<div class='panel panel-primary'>\n<div class='panel-body text-center bg-success'>";
+	gen.generator_markup+="border-radius: <span class='border_radius_code_output'>0px 0px 0px 0px</span>;\n</div>";
+	gen.generator_markup+="</div><ul class='list-group favourites'></ul>\n</div>";
+	gen.setSize=function(height,width){
 		gen.options[0]=height;
 		gen.options[1]=width;
 		$(gen.app_container_id+" "+gen.custom_object).height(height).width(width);
 		return gen;
 	};
-	this.setBackground=function(bg){
+	gen.setBackground=function(bg){
 		gen.options[3]=bg;
 		$(gen.app_container_id+" "+gen.custom_object).css("background",bg);
 		return gen;
 	};
-	this.setMax=function(value){
-		var sliders=$(gen.app_container_id+" .radius_slider");
-		for(var x=0;x<sliders.length;x++)
+	gen.setMax=function(value){
+		/*if(abs(value)<$(gen.sliders[0]).prop("max")){
+			var old=$(gen.sliders[0]).prop("max");
+			gen.code=old+"px "+old+"px "+old+"px "+old+"px";
+			$(gen.app_container_id+" .border_radius_code_output").text(gen.code);
+			$(gen.getId()+" "+gen.custom_object).css("border-radius",gen.code);	
+		}*/
+		for(var x=0,max=gen.sliders.length;x<max;x++)
 			try{
 				//Even if the use enters a negative value there won't be any problem since Math.abs will allways return a possitive value
 				$(sliders[x]).prop("max",Math.abs(value));
@@ -60,7 +67,7 @@ function Generator(args,custom_object){
 			}
 		return gen;
 	};
-	this.init=function(options){
+	gen.init=function(options){
 		//here we pass an array of default args-options with the following order
 		//height,width,max,background_color
 		if(!options)
@@ -90,27 +97,27 @@ function Generator(args,custom_object){
 		$(gen.app_container_id+" .generatorOutput").replaceWith($(gen.custom_object));
 	gen.init(gen.options);
 	gen.sliders=$(gen.app_container_id+" .radius_slider");
-	this.getCode=function(){
+	gen.getCode=function(){
 		return gen.code;
 	};
-	this.getOptions=function(){
+	gen.getOptions=function(){
 		return gen.options;
 	};
-	this.getId=function(){
+	gen.getId=function(){
 		return gen.app_container_id;
 	}
-	this.reset=function(){
+	gen.reset=function(){
 		gen.code="0px 0px 0px 0px";
 		for(var i=0;i<gen.sliders.length;i++)
-			$(this.sliders[i]).val(0);
-		$(gen.app_container_id+" .border_radius_code_output").text(this.code);
-		$(gen.getId()+" "+this.custom_object).css("border-radius","0");
+			$(gen.sliders[i]).val(0);
+		$(gen.app_container_id+" .border_radius_code_output").text(gen.code);
+		$(gen.getId()+" "+gen.custom_object).css("border-radius","0");
 		return gen;
 	};
-	this.activateGenerator=function(){
+	gen.activateGenerator=function(){
 		//Now we have a reference to the current generator we can use it
 		//inside .ready() function
-		//because if we use 'this' keyword inside .ready() function
+		//because if we use 'gen' keyword inside .ready() function
 		//we are not referencing to the generator object but to the jQuery object
 		$(document).ready(function(){
 			var host_div=gen.getId();
@@ -124,26 +131,27 @@ function Generator(args,custom_object){
 		});
 		return gen;//return the object that called the function
 	};
-	this.deactivateGenerator=function(){
+	gen.deactivateGenerator=function(){
 		$(document).ready(function(){
 			gen.reset();//First reset the generator 
 			$(gen.getId()).off();//Unregister any event listeners attached to the generator
 		});
 		return gen;//return the object that called the function to be able to chain functions
 	};
-	this.destroyGenerator=function(){
+	gen.destroyGenerator=function(){
 		//Warning!!!There is no going back
 		//go to hell
 		//sorry
 			$(gen.getId()+" .generatorContainer").remove();
 			$(gen.getId()+" .panel").remove();
 	};
-	this.replaceObject=function(object,restrict_size){
+	gen.replaceObject=function(object,restrict_size){
 		if(!object || object[0]=='.' || object[0] != "#")
 			throw new Error(!object?"Invalid object detected":"Class detected.Please switch to an object with id insted of class");
 		$(object).addClass("center-block");
 		$(gen.getId()+" "+gen.custom_object).replaceWith($(object));
 		gen.custom_object=object;
+		$(object).css("border-radius",gen.code);//apply the same radius as the object that was replaced
 		if(!restrict_size)
 			gen.options=[$(object).css("height"),$(object).css("width"),gen.options[2],$(object).css("background")];
 		else
@@ -151,30 +159,38 @@ function Generator(args,custom_object){
 		gen.init(gen.options);
 		return gen;//return the object that called the function
 	};
-	this.addToFavourites=function(){
+	gen.addToFavourites=function(){
 		if(gen.favourites.indexOf(gen.code)==-1 && gen.code != undefined)
 			gen.favourites.push(gen.code);
 		else
 			return gen;//the code exists so exit the function
-		//buggy function lol somebody fix this shit
+		//buggy function lol somebody fix gen shit
 		//not that buggy anymore :)
 		$(gen.getId()+" ul.favourites").append("<li class='generator_favourites list-group-item'>border-radius:"+gen.code+";</li>");
 		return gen;
 	};
-	this.getFavourites=function(){
+	gen.getFavourites=function(){
 		return gen.favourites;
 	};
-	this.toggleFavourites=function(speed){
+	gen.toggleFavourites=function(speed){
 		var x=$(gen.getId()+"  .list-group");
-		for(var i=0,max=x.length;i<max;i++)
-			log("Value:"+$(x));
 		$(gen.getId()+"  .favourites li").toggle(800);
 		return gen;
 	};
-	this.removeFavourites=function(){
+	gen.removeFavourites=function(){
 		gen.favourites.length=0;
 		$(gen.getId()+" .favourites li").remove();
 		return gen;
 	};
+	$(document).ready(function(){
+		$("body").on("click",gen.getId()+" li",function(){
+			var values=$(this).text().match(/\d+/g);
+			for(var i=0;i<4;i++)
+				$(gen.sliders[i]).val(values[i]);
+			gen.code=$(this).text().split(":")[1].split(';')[0];
+			$(gen.getId()+" "+gen.custom_object).css("border-radius",gen.code);
+			$(gen.getId()+" .border_radius_code_output").text(gen.code);
+		});
+	});
 }
 	
