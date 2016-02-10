@@ -22,6 +22,9 @@ This function accepts a list of 4 default options:height,width,max_value,default
 Gets the code generated from a miniRadiusGenerator.Chainable:No
 ##.getId()
 Returns the id of the host div.Chainable:No
+##.addToFavourites()
+Adds the curent code produced by the generator into a list.Chainable:Yes
+##
 <<<<<<< HEAD
 If you want to know wheter a method is chaiable you can call the isChainable() function and pass the name of the method as an argument and you will get true or false.
 For example: isChainable("activateGenerator") will return true
