@@ -3,6 +3,7 @@
 	Licensed under MIT
 	miniBorderRadius 2016
 */
+"use strict";
 function log(o){
 	console.log(o);
 }
@@ -10,12 +11,12 @@ function isChainable(name){
 	name=name[0]=='.'?name.slice(1).split("(")[0]:name.split("(")[0];//remove '.' and "(" and ")"
 	var chain={"init":true,"activateGenerator":true,"deactivateGenerator":true,"destroyGenerator":false,"replaceObject":true,"reset":true,
 		"setSize":true,"setBackground":true,"setMax":true,
-		"getId":false,"getCode":false,"getOptions":false,"getFavourites":false,"toggleFavourites":true
+		"getId":false,"getCode":false,"getOptions":false,"getFavourites":false,"toggleFavourites":true,
 		"removeFavourites":true,"addToFavourites":true,"showFavourites":true
 	};
 	return chain[name] != undefined ?chain[name]:false;//if the key does not exist in the above dictionary return  false else return its value
 }
-function Generator(arguments,custom_object){
+function Generator(args,custom_object){
 	var gen=this;//create self reference
 	var code='';
 	var val=function(o){
@@ -60,7 +61,7 @@ function Generator(arguments,custom_object){
 		return gen;
 	};
 	this.init=function(options){
-		//here we pass an array of default arguments-options with the following order
+		//here we pass an array of default args-options with the following order
 		//height,width,max,background_color
 		if(!options)
 			throw new Error("No list of options found");	
@@ -75,12 +76,12 @@ function Generator(arguments,custom_object){
 	};
 	//detect if the argument passed to the function is a string or an array-list
 
-	if(typeof arguments == 'string'){
-		gen.app_container_id=arguments==""?"body":arguments;
+	if(typeof args == 'string'){
+		gen.app_container_id=args==""?"body":args;
 	}
 	else{
-		gen.app_container_id=arguments[0];
-		gen.options=arguments.slice(1);//remove the id of the host container and return the remaining items of the list(height,width,max_value,bg)	
+		gen.app_container_id=args[0];
+		gen.options=args.slice(1);//remove the id of the host container and return the remaining items of the list(height,width,max_value,bg)	
 	}
 	//Mind the order
 	//First append and then call init()
@@ -155,7 +156,8 @@ function Generator(arguments,custom_object){
 			gen.favourites.push(gen.code);
 		else
 			return gen;//the code exists so exit the function
-		//buggy function lol someboy fix this shit
+		//buggy function lol somebody fix this shit
+		//not that buggy anymore :)
 		$(gen.getId()+" ul.favourites").append("<li class='generator_favourites list-group-item'>border-radius:"+gen.code+";</li>");
 		return gen;
 	};
@@ -163,7 +165,10 @@ function Generator(arguments,custom_object){
 		return gen.favourites;
 	};
 	this.toggleFavourites=function(speed){
-		$(gen.getId()+" .generatorContainer .favourites").toggle(!speed?800:speed);
+		var x=$(gen.getId()+"  .list-group");
+		for(var i=0,max=x.length;i<max;i++)
+			log("Value:"+$(x));
+		$(gen.getId()+"  .favourites li").toggle(800);
 		return gen;
 	};
 	this.removeFavourites=function(){
