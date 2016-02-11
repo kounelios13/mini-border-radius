@@ -6,4 +6,7 @@
 **miniBorderRadius** is a mini javascript plugin that allows you to add a number of border radius generators in your web page.It uses jQuery and bootstrap and it's **_easy_** to use.Download and open **_demo.html_** for usage instructions end axamples.You can also find everything from installing and configuring a generator in the file _manual.pdf_
 
 #_TODO_
-Let the user be able to download their favourites from each generator(requires Filesaver.js)
+1. Let the user be able to download their favourites from each generator(requires Filesaver.js)
+2. **Rework generator markup**
+3. Eject each generator inside a bootstrap panel
+
