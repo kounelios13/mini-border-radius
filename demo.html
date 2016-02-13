@@ -77,12 +77,7 @@
 			Now that you have included all relevant files there are a few things you need to do.
 			Each generator(yeap you can have unlimited generators in a single page) lives in it's own div.To initiate and activate a generator you have to create an instance of the Generator class and provide it with th id of the host div like this: <br>
 			 	<code>
-				 	var generator; <br>
-				 	$(document).ready(function(){ <br>
-				 		generator = new Generator("#sample");<br>
-						//for some reason you have to initiate the generator <br>	
-						//inside the ready() function.Hope to have this fixed in a future release though.
-				 	<br>});<br>
+				 	var generator = new Generator("#sample"); <br>
 				 </code>
 			Instead of using the id of the host div as an argument you can pass an array of default options like this: <br>
 			<code>

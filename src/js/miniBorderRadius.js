@@ -8,13 +8,13 @@
 function isChainable(name){
 	name=name[0]=='.'?name.slice(1).split("(")[0]:name.split("(")[0];//remove '.' and "(" and ")"
 	var chain={"init":true,"activateGenerator":true,"deactivateGenerator":true,"destroyGenerator":false,"replaceObject":true,"reset":true,
-		"setSize":true,"setBackground":true,"setMax":true,
+		"setSize":true,"setBackground":true,"setMax":true,"setStep":true,
 		"getId":false,"getCode":false,"getOptions":false,"getFavourites":false,"toggleFavourites":true,
 		"removeFavourites":true,"addToFavourites":true,"enablePreview":true
 	};
 	return chain[name] != undefined ?chain[name]:false;//if the key does not exist in the above dictionary return  false else return its value
 }
-function Generator(args,custom_object){
+function Generator(args,custom_object,enable_bootstrap_panel){
 	function log(o){
 		console.log(o);
 	}
@@ -39,6 +39,7 @@ function Generator(args,custom_object){
 	gen.generator_markup+="<div class='panel panel-primary'>\n<div class='panel-body text-center bg-success'>";
 	gen.generator_markup+="border-radius: <span class='border_radius_code_output'>0px 0px 0px 0px</span>;\n</div>";
 	gen.generator_markup+="</div><ul class='list-group favourites'></ul>\n</div>";
+	gen.bootstrap_markup="<div class='panel panel-primary'><div class='panel-heading text-center'>Generator</div><div class='panel-body'>"+gen.generator_markup+"</div></div>";
 	gen.setSize=function(height,width){
 		gen.options[0]=height;
 		gen.options[1]=width;
@@ -102,13 +103,14 @@ function Generator(args,custom_object){
 	}
 	//Mind the order
 	//First append and then call init()
-
-	$(gen.app_container_id).append(gen.generator_markup);
-	if(gen.custom_object != ".generatorOutput");
-		$(gen.app_container_id+" .generatorOutput").replaceWith($(gen.custom_object));
-	gen.init(gen.options);
-	gen.sliders=$(gen.app_container_id+" .radius_slider");
-	gen.getCode=function(){
+	$(document).ready(function(){
+		$(gen.app_container_id).append(!enable_bootstrap_panel?gen.generator_markup:gen.bootstrap_markup);
+		if(gen.custom_object != ".generatorOutput");
+			$(gen.app_container_id+" .generatorOutput").replaceWith($(gen.custom_object));
+		gen.init(gen.options);
+		gen.sliders=$(gen.app_container_id+" .radius_slider");
+	});
+		gen.getCode=function(){
 		return gen.code;
 	};
 	gen.getOptions=function(){
