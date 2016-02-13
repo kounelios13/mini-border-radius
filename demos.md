@@ -1,7 +1,7 @@
 #Demo
 
 ##Create a generator 
-You have 6 ways to  create a generator
+You have 6  ways to  create a generator
 1. ```var generator=new Generator("#sample")```
 2. ```var generator=new Generator(["#sample","10em","10em",200,'green']);```
 3. ```var generator=new Generator("#sample","#custom_generator_object");```
