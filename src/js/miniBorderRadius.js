@@ -123,7 +123,7 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 		gen.code="0px 0px 0px 0px";
 		for(var i=0;i<gen.sliders.length;i++)
 			$(gen.sliders[i]).val(0);
-		$(gen.app_container_id+" .border_radius_code_output").text(gen.code);
+		$(gen.getId()+" .border_radius_code_output").text(gen.code);
 		$(gen.getId()+" "+gen.custom_object).css("border-radius","0");
 		return gen;
 	};
@@ -205,6 +205,15 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 		});
 		return gen;
 	};
-	
+	gen.enableBootstrapContainer=function(){
+		$(document).ready(function(){
+			var host=gen.getId();
+			$(host+" ").replaceWith($(gen.bootstrap_markup));
+			$(host+" "+gen.custom_object).css("border-radius",gen.code);
+			$(host+" .border_radius_code_output").text(gen.code);
+			gen.init(gen.options);
+		});
+		return gen;
+	};	
 }
 	
