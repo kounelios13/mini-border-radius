@@ -4,9 +4,7 @@
 	miniBorderRadius 2016
 */
 "use strict";
-function log(o){
-	console.log(o);
-}
+
 function isChainable(name){
 	name=name[0]=='.'?name.slice(1).split("(")[0]:name.split("(")[0];//remove '.' and "(" and ")"
 	var chain={"init":true,"activateGenerator":true,"deactivateGenerator":true,"destroyGenerator":false,"replaceObject":true,"reset":true,
@@ -17,6 +15,10 @@ function isChainable(name){
 	return chain[name] != undefined ?chain[name]:false;//if the key does not exist in the above dictionary return  false else return its value
 }
 function Generator(args,custom_object){
+	function log(o){
+		console.log(o);
+	}
+	function abs(a){return Math.abs(a);}
 	//to avoid using 'this' all the time we create a self reference
 	//and we use it
 	var gen=this;
@@ -48,8 +50,15 @@ function Generator(args,custom_object){
 		$(gen.app_container_id+" "+gen.custom_object).css("background",bg);
 		return gen;
 	};
+	gen.setStep=function (step) {
+		var isValidStep=abs(step)<=$(gen.sliders[0]).prop("max") && !isNaN(step) && step;
+		if(!isValidStep)
+			throw new Error(!step?"Ivalid value":isNaN(step)?"Invalid step value":"Step value is greater than max value");
+		for(var i=0;i<4;i++)
+			$(gen.sliders[i]).prop("step",abs(step));
+		return gen;
+	};
 	gen.setMax=function(value){
-		function abs(a){return Math.abs(a);}
 		if(abs(value)<$(gen.sliders[0]).prop("max")){
 			var old=$(gen.sliders[0]).prop("max");
 			gen.code=abs(value)+"px "+abs(value)+"px "+abs(value)+"px "+abs(value)+"px";
