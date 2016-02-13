@@ -7,4 +7,5 @@
 * [So now what?](so_now_what.md)
 * [Wait.Nothing happened.](wait_nothing_happened.md)
 * [Generator methods](generator_methods.md)
+* [Demos](demos.md)
 

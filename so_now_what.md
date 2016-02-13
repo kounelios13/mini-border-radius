@@ -1,14 +1,10 @@
 # So now what?
 ##_So you installed mini border radius.Right?Well there are a few things left to do.Each generator needs its own div to live on.So to create a new generator you have to do it like this:_
 
-```var generator;```
-
-```$(document).ready(function(){generator = new Generator("#sample");
-});```
-
+```var generator=new Generator("#sample");```
 This is how a default generator looks like:
 ![generator sample picture](generatorSample.PNG)
-**Beware that you have to create the generator inside the .ready() function();**
+
 
 Instead of using the id of the host-parent div you can pass a list of 5 elements in the constructor like this:
 
