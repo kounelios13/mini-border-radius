@@ -22,7 +22,7 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 	//to avoid using 'this' all the time we create a self reference
 	//and we use it
 	var gen=this;
-	var code='';
+	gen.code='';
 	var val=function(o){
 		return $(o).val();
 	}
@@ -40,6 +40,7 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 	gen.generator_markup+="border-radius: <span class='border_radius_code_output'>0px 0px 0px 0px</span>;\n</div>";
 	gen.generator_markup+="</div><ul class='list-group favourites'></ul>\n</div>";
 	gen.bootstrap_markup="<div class='panel panel-primary'><div class='panel-heading text-center'>Generator</div><div class='panel-body'>"+gen.generator_markup+"</div></div>";
+	gen.target=gen.app_container_id+(gen.isBootstrapPanel? " .panel-body "+gen.custom_object:" "+gen.custom_object);
 	gen.setSize=function(height,width){
 		gen.options[0]=height;
 		gen.options[1]=width;
@@ -104,13 +105,13 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 	//Mind the order
 	//First append and then call init()
 	$(document).ready(function(){
-		$(gen.app_container_id).append(!enable_bootstrap_panel?gen.generator_markup:gen.bootstrap_markup);
+		$(gen.app_container_id).html(!enable_bootstrap_panel?gen.generator_markup:gen.bootstrap_markup);
 		if(gen.custom_object != ".generatorOutput");
 			$(gen.app_container_id+" .generatorOutput").replaceWith($(gen.custom_object));
 		gen.init(gen.options);
 		gen.sliders=$(gen.app_container_id+" .radius_slider");
 	});
-		gen.getCode=function(){
+	gen.getCode=function(){
 		return gen.code;
 	};
 	gen.getOptions=function(){
@@ -152,8 +153,9 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 		//Warning!!!There is no going back
 		//go to hell
 		//sorry
-			$(gen.getId()+" .generatorContainer").remove();
-			$(gen.getId()+" .panel").remove();
+		var host=gen.getId();
+		$(host+" .generatorContainer").remove();
+		$(host+" .panel").remove();
 	};
 	gen.replaceObject=function(object,restrict_size){
 		if(!object || object[0]=='.' || object[0] != "#")
@@ -170,6 +172,7 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 		return gen;//return the object that called the function
 	};
 	gen.addToFavourites=function(){
+		$(gen.getId()+"  .favourites li").show();
 		if(gen.favourites.indexOf(gen.code)==-1 && gen.code != undefined)
 			gen.favourites.push(gen.code);
 		else
@@ -200,19 +203,21 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 					$(gen.sliders[i]).val(values[i]);
 				gen.code=$(this).text().split(":")[1].split(';')[0];
 				$(gen.getId()+" "+gen.custom_object).css("border-radius",gen.code);
-				$(gen.getId()+" .border_radius_code_output").text(gen.code);
+				$(gen.getId()+" ").text(gen.code);
 			});
 		});
 		return gen;
 	};
 	gen.enableBootstrapContainer=function(){
-		$(document).ready(function(){
-			var host=gen.getId();
-			$(host+" ").replaceWith($(gen.bootstrap_markup));
-			$(host+" "+gen.custom_object).css("border-radius",gen.code);
-			$(host+" .border_radius_code_output").text(gen.code);
-			gen.init(gen.options);
-		});
+		var host=gen.getId();
+		var args=gen.options;
+		args.unshift(host);
+			/*$(host+" .border_radius_code_output").remove();
+			$(host+" .panel-body").remove();
+			$(host+" .generatorContainer").replaceWith(gen.bootstrap_markup);*/
+			gen=new Generator(args,gen.custom_object,true).activateGenerator(); 
+			
+			
 		return gen;
 	};	
 }
