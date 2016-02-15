@@ -4,7 +4,6 @@
 	miniBorderRadius 2016
 */
 "use strict";
-
 function isChainable(name){
 	name=name[0]=='.'?name.slice(1).split("(")[0]:name.split("(")[0];//remove '.' and "(" and ")"
 	var chain={"init":true,"activateGenerator":true,"deactivateGenerator":true,"destroyGenerator":false,"replaceObject":true,"reset":true,
@@ -84,7 +83,7 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 		//height,width,max,background_color
 		if(!options)
 			throw new Error("No list of options found");	
-		if(options.length<4){
+		else if(options.length<4){
 			throw new Error("Expected 4 parameters but got "+options.length+" parameters");
 		}
 		else{
@@ -162,6 +161,7 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 			throw new Error(!object?"Invalid object detected":"Class detected.Please switch to an object with id insted of class");
 		$(object).addClass("center-block");
 		$(gen.getId()+" "+gen.custom_object).replaceWith($(object));
+		
 		gen.custom_object=object;
 		$(object).css("border-radius",gen.code);//apply the same radius as the object that was replaced
 		if(!restrict_size)
@@ -213,11 +213,10 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 		var args=gen.options;
 		args.unshift(host);
 			/*$(host+" .border_radius_code_output").remove();
-			$(host+" .panel-body").remove();
-			$(host+" .generatorContainer").replaceWith(gen.bootstrap_markup);*/
+			$(host+" .panel-body").remove()
+;			$(host+" .generatorContainer").replaceWith(gen.bootstrap_markup);*/
+			gen.destroyGenerator();
 			gen=new Generator(args,gen.custom_object,true).activateGenerator(); 
-			
-			
 		return gen;
 	};	
 }
