@@ -30,11 +30,11 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 	gen.sliders=[];
 	gen.favourites=[];
 	gen.generator_markup="<div class='generatorContainer'>\n";
-	gen.generator_markup+="<input type='range' class='radius_slider' id='top_left_corner' min='0' max='100' value='0'>\n";
-	gen.generator_markup+="<input type='range' class='radius_slider' id='top_right_corner' min='0' max='100' value='0'>\n";
+	gen.generator_markup+="<input type='range' class='radius_slider top_left_corner'  min='0' max='100' value='0'>\n";
+	gen.generator_markup+="<input type='range' class='radius_slider top_right_corner' min='0' max='100' value='0'>\n";
 	gen.generator_markup+="<div class='generatorOutput'></div>\n";
-	gen.generator_markup+="<input type='range' class='radius_slider' id='bottom_right_corner' min='0' max='100' value='0'>\n";
-	gen.generator_markup+="<input type='range' class='radius_slider' id='bottom_left_corner' min='0' max='100' value='0'></div>\n";
+	gen.generator_markup+="<input type='range' class='radius_slider bottom_right_corner' min='0' max='100' value='0'>\n";
+	gen.generator_markup+="<input type='range' class='radius_slider bottom_left_corner'  min='0' max='100' value='0'></div>\n";
 	gen.generator_markup+="<div class='panel panel-primary'>\n<div class='panel-body text-center bg-success'>";
 	gen.generator_markup+="border-radius: <span class='border_radius_code_output'>0px 0px 0px 0px</span>;\n</div>";
 	gen.generator_markup+="</div><ul class='list-group favourites'></ul>\n</div>";
@@ -213,13 +213,14 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 		var args=gen.options;
 		var old_code=gen.getCode();
 		var old_favs=gen.favourites;
+		var old_obj=gen.custom_object;
 		args.unshift(host);
 			/*$(host+" .border_radius_code_output").remove();
 			$(host+" .panel-body").remove()
 ;			$(host+" .generatorContainer").replaceWith(gen.bootstrap_markup);*/
 			//$(gen.custom_object).css({"height":gen.options[0],"width":gen.options[1],"background":gen.options[3]});
-			gen.destroyGenerator();
-			gen=new Generator(args,gen.custom_object,true).activateGenerator(); 
+			$(host+" .panel").remove();
+			gen=new Generator(args,old_obj,true).activateGenerator(); 
 			gen.code=old_code;
 			gen.favourites=old_favs;
 		return gen;

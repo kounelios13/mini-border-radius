@@ -83,11 +83,11 @@ input[type="range"].radius_slider::-ms-thumb {
   border: 0;
   background: rgb(131,18,0);
 }
-	#top_left_corner,#bottom_left_corner{
+	.top_left_corner,.bottom_left_corner{
 		float: left;
 		width: 25%!important;
 	}
-	#top_right_corner,#bottom_right_corner{
+	.top_right_corner,.bottom_right_corner{
 		float:right;
 		width: 25%!important;
 	}
