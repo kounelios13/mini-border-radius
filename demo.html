@@ -3,11 +3,11 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Mini border radius generator</title>
-	<link rel="stylesheet" href="src/bower_components/bootstrap/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="src/bower_components/bootstrap/dist/css/bootstrap.min.css"> 
 	<link rel="stylesheet" href="src/css/miniBorderRadius.css">
 	<script src='src/bower_components/jquery/dist/jquery.min.js'></script>
 	<script src="src/js/miniBorderRadius.js"></script>
-	<script src="src/js/demo.min.js"></script>
+	<script src="src/js/demo.js"></script>
 	<style>
 	body{
 		background: rgb(69,109,221);
@@ -88,6 +88,7 @@
 		<div id="sample"  class="container"></div>
 		<div class="btn btn-primary" onclick="gen.addToFavourites()">Add code to favourites</div>
 		<div class="btn btn-primary" onclick="gen.toggleFavourites()">Toggle favourites</div>
+		<div class="btn btn-primary" onclick="gen.enablePreview()">Enable preview</div>
 		<h1>
 			<em>Wait.nothing happend</em>
 		</h1>
@@ -100,7 +101,8 @@
 			<br>
 			<span id="bind_move" class="btn btn-primary">
 				Press me to activate generator
-			</span>				
+			</span>			
+
 		</p>
 		<h1>
 			<em>How many of them?</em>
