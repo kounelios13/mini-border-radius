@@ -197,13 +197,13 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 	};
 	gen.enablePreview=function(){
 		$(document).ready(function(){
-			$("body").on("click",gen.getId()+" li",function(){
+			$(document).on("click",gen.getId()+" li",function(){
 				var values=$(this).text().match(/\d+/g);
 				for(var i=0;i<4;i++)
 					$(gen.sliders[i]).val(values[i]);
 				gen.code=$(this).text().split(":")[1].split(';')[0];
 				$(gen.getId()+" "+gen.custom_object).css("border-radius",gen.code);
-				$(gen.getId()+" ").text(gen.code);
+				$(gen.getId()+" .border_radius_code_output").text(gen.code);
 			});
 		});
 		return gen;
