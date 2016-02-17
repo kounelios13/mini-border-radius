@@ -37,6 +37,7 @@
 		margin: auto;
 	}
 	</style>
+	
 </head>
 <body>
 	<div id="setup_instructions" class="container">
@@ -89,6 +90,7 @@
 		<div class="btn btn-primary" onclick="gen.addToFavourites()">Add code to favourites</div>
 		<div class="btn btn-primary" onclick="gen.toggleFavourites()">Toggle favourites</div>
 		<div class="btn btn-primary" onclick="gen.enablePreview()">Enable preview</div>
+		<div id="enable_all" class="btn btn-info">Magic</div>
 		<h1>
 			<em>Wait.nothing happend</em>
 		</h1>
@@ -187,7 +189,7 @@
 			If you don't remember wheter a function is chainable or not you can call  isChainable(name) and pass teh name of the function you want to check.You will get a true or false.For example the following: <code>console.log(isChainable("init")) ;</code> will log true because init function is chainable.You will get the same output if you write <code>console.log(isChainable(".init"));</code> or <code>console.log(isChainable(".init()"));</code>.
 		</p>
 	</div>
-	<div id="generators">
+	<div id="generators" style="display: inherit;">
 		<div id="sample2" class="container more_generators"></div>
 		<div id="sample3" class="container more_generators"></div>
 		<div id="sample4" class="container more_generators"></div>	

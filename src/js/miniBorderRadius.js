@@ -54,7 +54,7 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 	gen.setStep=function (step) {
 		var isValidStep=abs(step)<=$(gen.sliders[0]).prop("max") && !isNaN(step) && step;
 		if(!isValidStep)
-			throw new Error(!step?"Ivalid value":isNaN(step)?"Invalid step value":"Step value is greater than max value");
+			throw new Error(!step?"Invalid value":isNaN(step)?"Invalid step value":"Step value is greater than max value");
 		for(var i=0;i<4;i++)
 			$(gen.sliders[i]).prop("step",abs(step));
 		return gen;
@@ -190,8 +190,9 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 		$(gen.getId()+"  .favourites li").toggle(800);
 		return gen;
 	};
-	gen.removeFavourites=function(){
-		gen.favourites.length=0;
+	gen.removeFavourites=function(preserve){
+		if(!preserve)//in case we only want to remove  all list items in the page but keep the actual array 
+			gen.favourites.length=0;
 		$(gen.getId()+" .favourites li").remove();
 		return gen;
 	};
@@ -215,11 +216,8 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 		var old_favs=gen.favourites;
 		var old_obj=gen.custom_object;
 		args.unshift(host);
-			/*$(host+" .border_radius_code_output").remove();
-			$(host+" .panel-body").remove()
-;			$(host+" .generatorContainer").replaceWith(gen.bootstrap_markup);*/
-			//$(gen.custom_object).css({"height":gen.options[0],"width":gen.options[1],"background":gen.options[3]});
 			$(host+" .panel").remove();
+			gen.removeFavourites(true);
 			gen=new Generator(args,old_obj,true).activateGenerator(); 
 			gen.code=old_code;
 			gen.favourites=old_favs;

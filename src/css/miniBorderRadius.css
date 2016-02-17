@@ -97,3 +97,9 @@ input[type="range"].radius_slider::-ms-thumb {
 	.favourites{
  		margin-top: 2em;
 	}
+  #generator_methods{
+    display: none;
+  }
+ #generators .more_generators{
+    display: block !important;
+  }
