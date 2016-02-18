@@ -4,6 +4,7 @@
 	miniBorderRadius 2016
 */
 "use strict";
+var generators=[];
 function isChainable(name){
 	name=name[0]=='.'?name.slice(1).split("(")[0]:name.split("(")[0];//remove '.' and "(" and ")"
 	var chain={"init":true,"activateGenerator":true,"deactivateGenerator":true,"destroyGenerator":false,"replaceObject":true,"reset":true,
@@ -25,6 +26,7 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 	var val=function(o){
 		return $(o).val();
 	}
+	gen.host_id='';
 	gen.custom_object=custom_object||".generatorOutput";
 	gen.options=["10em","10em",100,"maroon"];
 	gen.sliders=[];
@@ -39,7 +41,6 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 	gen.generator_markup+="border-radius: <span class='border_radius_code_output'>0px 0px 0px 0px</span>;\n</div>";
 	gen.generator_markup+="</div><ul class='list-group favourites'></ul>\n</div>";
 	gen.bootstrap_markup="<div class='panel panel-primary'><div class='panel-heading text-center'>Generator</div><div class='panel-body'>"+gen.generator_markup+"</div></div>";
-	gen.target=gen.host_id+(gen.isBootstrapPanel? " .panel-body "+gen.custom_object:" "+gen.custom_object);
 	gen.setSize=function(height,width){
 		gen.options[0]=height;
 		gen.options[1]=width;
@@ -215,13 +216,16 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 		var old_code=gen.getCode();
 		var old_favs=gen.favourites;
 		var old_obj=gen.custom_object;
+		var index=generators.indexOf(gen);
 		args.unshift(host);
 			$(host+" .panel").remove();
 			gen.removeFavourites(true);
 			gen=new Generator(args,old_obj,true).activateGenerator(); 
 			gen.code=old_code;
 			gen.favourites=old_favs;
+			generators[index]=gen;
 		return gen;
 	};	
+	generators.push(gen);
 }
 	
