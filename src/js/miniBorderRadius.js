@@ -125,6 +125,7 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 		$(gen.host_id).html(!enable_bootstrap_panel?gen.generator_markup:gen.bootstrap_markup);
 		if(gen.custom_object != ".generatorOutput" && reservedItems.indexOf(gen.custom_object)==-1){
 			$(gen.host_id+" .generatorOutput").replaceWith($(gen.custom_object));
+			$(gen.custom_object).addClass('generatorOutput');
 			reservedItems.push(gen.custom_object);
 		}
 		gen.init(gen.getOptions());
@@ -140,13 +141,13 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 		return gen.host_id;
 	}
 	gen.reset=function(){
-		var target=!enable_bootstrap_panel?host_div+" "+gen.custom_object:host_div+" .generatorContainer .generatorOutput";
+		var target=!enable_bootstrap_panel?host_div+" "+gen.custom_object:host_div+"  .generatorOutput";
 		gen.code="0px 0px 0px 0px";
 		for(var i=0;i<gen.sliders.length;i++)
 			$(gen.sliders[i]).val(0);
 		$(gen.getId()+" .border_radius_code_output").text(gen.code);
 		
-		$(target).css("border-radius","0");
+		$(host_div+" .generatorOutput").css("border-radius","0");
 		return gen;
 	};
 	gen.activateGenerator=function(){
@@ -155,7 +156,7 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 
 		$(document).ready(function(){
 			var host_div=gen.getId();
-			var target=!enable_bootstrap_panel?host_div+" "+gen.custom_object:host_div+" .generatorContainer .generatorOutput";
+			var target=!enable_bootstrap_panel?host_div+" "+gen.custom_object:host_div+"  .generatorOutput";
 			$(host_div).on("mousemove touchmove",'.radius_slider',function(){
 				//touchmove is needed for touch screens
 				gen.code=val(gen.sliders[0])+"px "+val(gen.sliders[1])+"px "+val(gen.sliders[2])+"px "+val(gen.sliders[3])+"px";
@@ -188,6 +189,7 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 		else 
 			throw new Error("This object is already being used.!!!!");
 		$(object).addClass("center-block");
+		$(object).addClass("generatorOutput");
 		$(gen.getId()+" "+gen.custom_object).replaceWith($(object));
 		gen.custom_object=object;
 		//Check the current border radius and apply it to the new object
@@ -251,6 +253,13 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 			$(host+" .generatorContainer").remove();
 			gen.removeFavourites(true);
 			gen=new Generator(args,old_obj,true).activateGenerator(); 
+			$(host+" .generatorOutput").css('border-radius',old_code);
+			//after setting border -radius make sure to move each slider in to its old position
+			//and update the code output
+			var values=old_code.match(/\d+/g);
+				for(var i=0;i<4;i++)
+					$(gen.sliders[i]).val(values[i]);
+			$(host+" .border_radius_code_output").text(old_code);	
 			gen.options=gen.getOptions();
 			gen.code=old_code;
 			gen.favourites=old_favs;

@@ -38,6 +38,7 @@ $(document).ready(function(){
 	});
 	$("#enable_all").click(function(){
 		gen.enableBootstrapContainer();
+		gen3.enableBootstrapContainer();
 	});
 }).on("keypress",function(e){
 	//console.log(e);
