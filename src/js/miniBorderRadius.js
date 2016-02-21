@@ -141,13 +141,12 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 		return gen.host_id;
 	}
 	gen.reset=function(){
-		var target=!enable_bootstrap_panel?host_div+" "+gen.custom_object:host_div+"  .generatorOutput";
 		gen.code="0px 0px 0px 0px";
 		for(var i=0;i<gen.sliders.length;i++)
 			$(gen.sliders[i]).val(0);
 		$(gen.getId()+" .border_radius_code_output").text(gen.code);
 		
-		$(host_div+" .generatorOutput").css("border-radius","0");
+		$(gen.getId()+" .generatorOutput").css("border-radius","0");
 		return gen;
 	};
 	gen.activateGenerator=function(){
