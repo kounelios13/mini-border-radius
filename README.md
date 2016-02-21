@@ -8,5 +8,5 @@
 #_TODO_
 1. Let the user be able to download their favourites from each generator(requires Filesaver.js)
 2. **Rework generator markup**
-3. Eject each generator inside a bootstrap panel
+3. Inject each generator inside a bootstrap panel
 
