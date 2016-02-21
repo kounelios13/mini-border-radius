@@ -44,9 +44,11 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 	gen.generator_markup+="</div><ul class='list-group favourites'></ul>\n</div>";
 	gen.bootstrap_markup="<div class='panel panel-primary'><div class='panel-heading text-center'>Generator</div><div class='panel-body'>"+gen.generator_markup+"</div></div>";
 	gen.setSize=function(height,width){
+		var host_div=gen.host_id;
+		var target=!enable_bootstrap_panel?host_div+" "+gen.custom_object:host_div+" .generatorOutput";
 		gen.options[0]=height;
 		gen.options[1]=width;
-		$(gen.host_id+" "+gen.custom_object).height(height).width(width);
+		$(target).height(height).width(width);
 		return gen;
 	};
 	gen.setBackground=function(bg,random_color){
@@ -59,7 +61,7 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 		};
 		var color=!random_color?bg:ranColor();
 		gen.options[3]=color;
-		$(target).css("background",color);
+		$(target).css("background",color,'!important');
 		return gen;
 	};
 	gen.setStep=function (step) {
@@ -89,6 +91,9 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 			}
 		return gen;
 	};
+	gen.getOptions=function(){
+		return gen.options;
+	};
 	gen.init=function(options){
 		//here we pass an array of default args-options with the following order
 		//height,width,max,background_color
@@ -106,7 +111,9 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 	//detect if the argument passed to the function is a string or an array-list
 
 	if(typeof args == 'string'){
-		gen.host_id=args==""?"body":args;
+		if(!args)
+			throw new Error("Host id can't be empty !!!");
+		gen.host_id=args;
 	}
 	else{
 		gen.host_id=args[0];
@@ -120,7 +127,7 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 			$(gen.host_id+" .generatorOutput").replaceWith($(gen.custom_object));
 			reservedItems.push(gen.custom_object);
 		}
-		gen.init(gen.options);
+		gen.init(gen.getOptions());
 		gen.sliders=$(gen.host_id+" .radius_slider");
 	});
 	gen.getCode=function(){
@@ -237,12 +244,14 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 		var old_code=gen.getCode();
 		var old_favs=gen.favourites;
 		var old_obj=gen.custom_object;
-		//var index=generators.indexOf(gen);
 		args.unshift(host);
+		//var index=generators.indexOf(gen);
+		
 			$(host+" .panel").remove();
 			$(host+" .generatorContainer").remove();
 			gen.removeFavourites(true);
 			gen=new Generator(args,old_obj,true).activateGenerator(); 
+			gen.options=gen.getOptions();
 			gen.code=old_code;
 			gen.favourites=old_favs;
 			//generators[index]=gen;
