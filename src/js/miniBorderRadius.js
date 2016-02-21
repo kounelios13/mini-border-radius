@@ -246,7 +246,7 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 		var old_favs=gen.favourites;
 		var old_obj=gen.custom_object;
 		args.unshift(host);
-		//var index=generators.indexOf(gen);
+		var index=generators.indexOf(gen);
 		
 			$(host+" .panel").remove();
 			$(host+" .generatorContainer").remove();
