@@ -5,6 +5,7 @@
 */
 "use strict";
 var generators=[];
+var reservedItems=[];
 function isChainable(name){
 	name=name[0]=='.'?name.slice(1).split("(")[0]:name.split("(")[0];//remove '.' and "(" and ")"
 	var chain={"init":true,"activateGenerator":true,"deactivateGenerator":true,"destroyGenerator":false,"replaceObject":true,"reset":true,
@@ -31,6 +32,7 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 	gen.options=["10em","10em",100,"maroon"];
 	gen.sliders=[];
 	gen.favourites=[];
+	gen.colors=["#fabb00","rgb(255,53,0)","rgb(3,86,255)","rgb(20, 77, 239)","#107B9E"];
 	gen.generator_markup="<div class='generatorContainer'>\n";
 	gen.generator_markup+="<input type='range' class='radius_slider top_left_corner'  min='0' max='100' value='0'>\n";
 	gen.generator_markup+="<input type='range' class='radius_slider top_right_corner' min='0' max='100' value='0'>\n";
@@ -47,9 +49,17 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 		$(gen.host_id+" "+gen.custom_object).height(height).width(width);
 		return gen;
 	};
-	gen.setBackground=function(bg){
-		gen.options[3]=bg;
-		$(gen.host_id+" "+gen.custom_object).css("background",bg);
+	gen.setBackground=function(bg,random_color){
+		var host_div=gen.host_id;
+		var target=!enable_bootstrap_panel?host_div+" "+gen.custom_object:host_div+" .generatorOutput";
+		if(bg)
+			gen.colors.push(bg);
+		function ranColor(){
+			return gen.colors[Math.round(Math.random()* gen.colors.length)];
+		};
+		var color=!random_color?bg:ranColor();
+		gen.options[3]=color;
+		$(target).css("background",color);
 		return gen;
 	};
 	gen.setStep=function (step) {
@@ -106,8 +116,10 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 	//First append and then call init()
 	$(document).ready(function(){
 		$(gen.host_id).html(!enable_bootstrap_panel?gen.generator_markup:gen.bootstrap_markup);
-		if(gen.custom_object != ".generatorOutput");
+		if(gen.custom_object != ".generatorOutput" && reservedItems.indexOf(gen.custom_object)==-1){
 			$(gen.host_id+" .generatorOutput").replaceWith($(gen.custom_object));
+			reservedItems.push(gen.custom_object);
+		}
 		gen.init(gen.options);
 		gen.sliders=$(gen.host_id+" .radius_slider");
 	});
@@ -121,23 +133,27 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 		return gen.host_id;
 	}
 	gen.reset=function(){
+		var target=!enable_bootstrap_panel?host_div+" "+gen.custom_object:host_div+" .generatorContainer .generatorOutput";
 		gen.code="0px 0px 0px 0px";
 		for(var i=0;i<gen.sliders.length;i++)
 			$(gen.sliders[i]).val(0);
 		$(gen.getId()+" .border_radius_code_output").text(gen.code);
-		$(gen.getId()+" "+gen.custom_object).css("border-radius","0");
+		
+		$(target).css("border-radius","0");
 		return gen;
 	};
 	gen.activateGenerator=function(){
 		//In order to be able to manipulate DOM properties such as the border radius of an object 
 		//in real time we have to attach an eventListener
+
 		$(document).ready(function(){
 			var host_div=gen.getId();
+			var target=!enable_bootstrap_panel?host_div+" "+gen.custom_object:host_div+" .generatorContainer .generatorOutput";
 			$(host_div).on("mousemove touchmove",'.radius_slider',function(){
 				//touchmove is needed for touch screens
 				gen.code=val(gen.sliders[0])+"px "+val(gen.sliders[1])+"px "+val(gen.sliders[2])+"px "+val(gen.sliders[3])+"px";
 				$(host_div+" .border_radius_code_output").text(gen.code);
-				$(host_div+" "+gen.custom_object).css("border-radius",gen.code);
+				$(target).css("border-radius",gen.code);
 			});
 		});
 		return gen;//return the object that called the function
@@ -160,10 +176,14 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 	gen.replaceObject=function(object,restrict_size){
 		if(!object || object[0]=='.' || object[0] != "#")
 			throw new Error(!object?"Invalid object detected":"Class detected.Please switch to an object with id insted of class");
+		if(reservedItems.indexOf(object)==-1)
+			reservedItems.push(object);
+		else 
+			throw new Error("This object is already being used.!!!!");
 		$(object).addClass("center-block");
 		$(gen.getId()+" "+gen.custom_object).replaceWith($(object));
-
 		gen.custom_object=object;
+		//Check the current border radius and apply it to the new object
 		$(object).css("border-radius",gen.code);//apply the same radius as the object that was replaced
 		if(!restrict_size)
 			gen.options=[$(object).css("height"),$(object).css("width"),gen.options[2],$(object).css("background")];
@@ -199,6 +219,7 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 	};
 	gen.enablePreview=function(){
 		$(document).ready(function(){
+			var host=gen.getId();
 			$(document).on("click",gen.getId()+" li",function(){
 				var values=$(this).text().match(/\d+/g);
 				for(var i=0;i<4;i++)
@@ -216,16 +237,17 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 		var old_code=gen.getCode();
 		var old_favs=gen.favourites;
 		var old_obj=gen.custom_object;
-		var index=generators.indexOf(gen);
+		//var index=generators.indexOf(gen);
 		args.unshift(host);
 			$(host+" .panel").remove();
+			$(host+" .generatorContainer").remove();
 			gen.removeFavourites(true);
 			gen=new Generator(args,old_obj,true).activateGenerator(); 
 			gen.code=old_code;
 			gen.favourites=old_favs;
-			generators[index]=gen;
+			//generators[index]=gen;
 		return gen;
 	};	
-	generators.push(gen);
-}
+	//generators.push(gen);
+}//function Generator
 	
