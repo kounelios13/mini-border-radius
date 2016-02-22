@@ -48,32 +48,32 @@
         <p id="chapter_4">
           So you installed mini border radius.Right?Well there are a few things left to do.Each generator needs its own div to live on.So to create a new generator you have to do it like this: <br>
           <code>
-            var generator;
-            <br>
-            <code>
-              $(document).ready(function(){ <br>
-                  generator = new Generator("#sample"); <br>
-              });
-              </code>
+            var generator = new Generator("#sample");
+  
           </code>
-          <br> 
-           <strong>Beware that you have to create the generator inside the <code>ready()</code> function.</strong> <br>
            <div id="create_generator" class="btn btn-primary">Create a generator.</div>
            <div id="sample"></div>
-           Instead of using the id of the host-parent div you can pass a list of 5 elements in the constructor like this: <code>generator=new Generator([host_div_id,height,width,max_value,bg_color]);</code>
-            <p>Now the first parameter of the list is the id of the host-parent div.The next 2 parameters determine the size of the generator in the page.The fourth value determines the max value for the sliders inside the generator and the last one determines the background color of the generator.There is also a third constructor(3rd way to create a generator) which takes 2 arguments.The first one can be the id of the host-parent div or it can be a list like the previous list.The second one parameter is the id of an existing object in your page.What is this object?This object is going to replace the default object that the generator uses to apply the border-radius property.Example:
-            <br>
-            <code>
-              generator=new Generator([host_div_id,height,width,max_value,bg_color],"#image"); <br>
-            </code>          
-            Let me tell you what the above code does.It look for an html element with the id "#image".It removes it from where it is and it replaces the default object used by the generator with this element.
-        </p>
+           <div class="panel">
+             <div class="panel-body">
+                    <p> Instead of using the id of the host-parent div you can pass a list of 5 elements in the constructor like this: <code>generator=new Generator([host_div_id,height,width,max_value,bg_color]);</code>
+                    <p>Now the first parameter of the list is the id of the host-parent div.The next 2 parameters determine the size of the generator in the page.The fourth value determines the max value for the sliders inside the generator and the last one determines the background color of the generator.There is also a third constructor(3rd way to create a generator) which takes 2 arguments.The first one can be the id of the host-parent div or it can be a list like the previous list.The second one parameter is the id of an existing object in your page.What is this object?This object is going to replace the default object that the generator uses to apply the border-radius property.Example:
+                    <code>
+                      generator=new Generator([host_div_id,height,width,max_value,bg_color],"#image"); <br>
+                    </code>          
+                    Let me tell you what the above code does.It look for an html element with the id "#image".It removes it from where it is and it replaces the default object used by the generator with this element.
+                </p>
+             </div>
+           </div>
+          
         <h1 class="text-info">Wait.Nothing happened.</h1>
         <p id="chapter_5">So you have followed all the instructions up to here only to see that the generator is visible in your page but it is not working.This is absolutely normal.Creating a generator does not mean that is active.To activate generator you have to write the following code:
           <code>generator.activateGenerator();</code> and then you are ready to go.
           <span id="activate_generator" class="btn btn-info">Activate generator</span>
         </p>
         <h1 class="text-info">Generator methods</h1>
+          <div class="alert alert-danger">
+              <strong>Warning!</strong>Not all methoda are listed here.Open manual.pdf for a complete list of methods and examples
+          </div>
         <p id="chapter_6">Each generator has some methods:</p>
         <div class="btn btn-info" onclick="$('#generator_methods').toggle(800)">Toggle Methods</div>
         <div id="generator_methods">
@@ -96,16 +96,12 @@
               </div>
           </div>
           <div class="panel panel-info">
-            <div class="panel-heading">.setMax(value)</div>
-            <div class="panel-body">Sets the max value for all the sliders inside a generator. Chainable:Yes</div>
-          </div>
-          <div class="panel panel-info">
             <div class="panel-heading">.setSize(height,width)</div>
             <div class="panel-body">Sets the size of the generator. Chainable:Yes</div>
           </div>
           <div class="panel panel-info">
-            <div class="panel-heading">.setBackground(color)</div>
-            <div class="panel-body">Sets the background color of a generator.Chainable:Yes</div>
+            <div class="panel-heading">.setBackground(color,boolean_value)</div>
+            <div class="panel-body">Sets the background color of a generator.If true is passed as second argument a random color will be selected.Chainable:Yes</div>
           </div>
           <div class="panel panel-info">
             <div class="panel-heading">.init(options)</div>
@@ -114,10 +110,6 @@
           <div class="panel panel-info">
             <div class="panel-heading">.getCode()</div>
             <div class="panel-body">Gets the code generated from a miniRadiusGenerator.Chainable:No</div>
-          </div>
-          <div class="panel panel-info">
-            <div class="panel-heading">.getOptions()</div>
-            <div class="panel-body">Returns a list with the default options of the generator.Chainable:No</div>
           </div>
           <div class="panel panel-info">
             <div class="panel-heading">.getId()</div>
@@ -135,14 +127,6 @@
           <div class="panel panel-info">
             <div class="panel-heading">.removeFavourites()</div>
             <div class="panel-body">Removes favourites.Chainable:Yes</div>
-          </div>
-          <div class="panel panel-info">
-            <div class="panel-heading">.toggleFavourites()</div>
-            <div class="panel-body">Toggle the list of favourites created by the current generator.Chainable:Yes</div>
-          </div>
-          <div class="panel panel-info">
-            <div class="panel-heading">.enablePreview()</div>
-            <div class="panel-body">When you execute this method you are able to preview any border radius in your current favourites list just by clicking it.Chainable:Yes</div>
           </div>
           <p>
           If you don't remember wheter a function is chainable or not you can call  isChainable(name) and pass teh name of the function you want to check.You will get a true or false.For example the following: <code>console.log(isChainable("init")) ;</code> will log true because init function is chainable.You will get the same output if you write <code>console.log(isChainable(".init"));</code> or <code>console.log(isChainable(".init()"));</code>.

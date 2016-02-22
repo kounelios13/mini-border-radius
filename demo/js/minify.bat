@@ -1,0 +1,1 @@
+uglifyjs miniBorderRadius.js -o miniBorderRadius.min.js

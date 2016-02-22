@@ -8,6 +8,11 @@ body{
 	text-align: justify;
 	max-width: 69pc;
 }
+#chapters .panel-body p{
+	color: inherit;
+	1text-align: center;
+	max-width: inherit;
+}
 code pre,pre code{
 	padding: 2px 4px;
     font-size: 110%;
