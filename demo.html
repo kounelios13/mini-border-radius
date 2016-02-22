@@ -122,6 +122,7 @@
 		<div class="btn btn-info" onclick="$('#generator_methods').toggle(980)">Toggle methods</div>
 	</div>
 	<div class="container" id="generator_methods">
+		<h2 class="text-warning text-center">Not all methods are listed here.To see a list with all the available methods open the manual.pdf file</h2>
 		<div class="panel panel-info">
 			<div class="panel-heading">.activateGenerator()</div>
 			<div class="panel-body">This is the main function that activates the generator.Chainable:Yes</div>
@@ -143,12 +144,8 @@
 			<div class="panel-body">Does what it says :p</div>
 		</div>
 		<div class="panel panel-info">
-			<div class="panel-heading">.setMax(value)</div>
-			<div class="panel-body">Set the maximum value for all the sliders inside a generator.Chainable:Yes</div>
-		</div>
-		<div class="panel panel-info">
-			<div class="panel-heading">.setBackground(color)</div>
-			<div class="panel-body">set the background color of a generator.Chainable:Yes</div>
+			<div class="panel-heading">.setBackground(color,true)</div>
+			<div class="panel-body">set the background color of a generator.If true is passed as second argument a random color will be choosen.Chainable:Yes</div>
 		</div>
 		<div class="panel panel-info">
 			<div class="panel-heading">.init(options)</div>
@@ -157,10 +154,6 @@
 		<div class="panel panel-info">
 			<div class="panel-heading">.getCode()</div>
 			<div class="panel-body">Gets the code generated from a miniRadiusGenerator.Chainable:No</div>
-		</div>
-		<div class="panel panel-info">
-			<div class="panel-heading">.getOptions()</div>
-			<div class="panel-body">Returns a list with the default options of the generator.Chainable:No</div>
 		</div>
 		<div class="panel panel-info">
 			<div class="panel-heading">.getId()</div>
@@ -177,14 +170,6 @@
 		<div class="panel panel-info">
 			<div class="panel-heading">.removeFavourites()</div>
 			<div class="panel-body">Removes favourites.Chainable:Yes</div>
-		</div>
-		<div class="panel panel-info">
-			<div class="panel-heading">.toggleFavourites()</div>
-			<div class="panel-body">Toggle the favourites list created by the current generator.Chainable:Yes</div>
-		</div>
-		<div class="panel panel-info">
-			<div class="panel-heading">.enablePreview()</div>
-			<div class="panel-body">When you execute this method you are able to preview any border radius in your current favourites list just by clicking it.Chainable:Yes</div>
 		</div>
 		<p>
 			If you don't remember wheter a function is chainable or not you can call  isChainable(name) and pass teh name of the function you want to check.You will get a true or false.For example the following: <code>console.log(isChainable("init")) ;</code> will log true because init function is chainable.You will get the same output if you write <code>console.log(isChainable(".init"));</code> or <code>console.log(isChainable(".init()"));</code>.
