@@ -177,7 +177,7 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 		var host=gen.getId();
 		$(host+" .generatorContainer").remove();
 		$(host+" .panel").remove();
-		generators[generators.indexOf(gen)]=null;
+		//generators[generators.indexOf(gen)]=null; we might want to keep the data from that generator
 	};
 	gen.replaceObject=function(object,restrict_size){
 		if(!object || object[0]=='.' || object[0] != "#")
@@ -223,6 +223,15 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 			gen.favourites.length=0;
 		$(gen.getId()+" .favourites li").remove();
 		return gen;
+	};
+	gen.downloadFavourites=function(){
+		var file="/********\n";
+		var items=gen.getFavourites();
+		for(var i=0,max=items.length;i<max;i++)
+			file+="border-radius:"+items[i]+";\n";
+		file+="\n*****miniBorderRadius plugin\n\n visit https://github.com/kounelios13/mini-border-radius to see more.\n****/";
+		var blob = new Blob([file], {type: "text/plain;charset=utf-8"});
+		saveAs(blob,"favourites.css");
 	};
 	gen.enablePreview=function(){
 		$(document).ready(function(){
