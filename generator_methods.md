@@ -14,8 +14,8 @@ Replace the default object where border radius is applied with another one.If yo
 Set the max value for all the sliders inside a generator. Chainable:Yes
 ##.setSize(height,width)  
 Sets the size of a generator.Chainable:Yes
-##.setBackground(color)
-Sets the background color of a generator.Chainable:Yes
+##.setBackground(color,true)
+Sets the background color of a generator.When true is passed as second argument a random color will be selected.Chainable:Yes
 ##.init(options)
 This function accepts a list of 4 default options:height,width,max_value,default_background.Chainable:Yes
 ##.getCode()
@@ -32,6 +32,8 @@ Removes favourites.Chainable:Yes
 Toggle the list of favourites created by the current generator.Chainable:Yes
 ##.enablePreview()
 When you execute this method you are able to preview any border radius in your current favourites list just by clicking it.Chainable:Yes
+#.enableBootstrapContainer
+Replace the current container of the generator with a bootstrap panel.Chainable:No
 <<<<<<< HEAD
 If you want to know wheter a method is chaiable you can call the isChainable() function and pass the name of the method as an argument and you will get true or false.
 For example: isChainable("activateGenerator") will return true

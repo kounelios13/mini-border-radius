@@ -22,11 +22,13 @@ You have 6  ways to  create a generator
 2. ``` generator.setMax(-100); ```
 ##.setSize(height,width)
 ```generator.setSize("12em","12em");```
-##.setBackground(bg)
+##.setBackground(bg,true)
 1. ```generator.setBackground('red')```
 2. ```generator.setBackground("#faa718");```
 3. ```generator.setBackground("rgb(20,98,12)");```
 4. ```generator.setBackground("rgba(20,187,87,0.9");```
 5. ```generator.setBackground("url('path/to/image.png')no-repeat center center fixed");```
-
+6. ```generator.setBackground('red',true)```
+7. ```generator.setBackground('',true)```
+8. ```generator.setBackground(null,true)```
     
