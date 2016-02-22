@@ -11,7 +11,7 @@ function isChainable(name){
 	var chain={"init":true,"activateGenerator":true,"deactivateGenerator":true,"destroyGenerator":false,"replaceObject":true,"reset":true,
 		"setSize":true,"setBackground":true,"setMax":true,"setStep":true,
 		"getId":false,"getCode":false,"getOptions":false,"getFavourites":false,"toggleFavourites":true,
-		"removeFavourites":true,"addToFavourites":true,"enablePreview":true,"enableBootstrapContainer":true
+		"removeFavourites":true,"addToFavourites":true,"downloadFavourites":true,"enablePreview":true,"enableBootstrapContainer":true
 	};
 	return chain[name] != undefined ?chain[name]:false;//if the key does not exist in the above dictionary return  false else return its value
 }
