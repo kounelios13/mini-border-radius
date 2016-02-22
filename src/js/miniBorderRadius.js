@@ -11,7 +11,7 @@ function isChainable(name){
 	var chain={"init":true,"activateGenerator":true,"deactivateGenerator":true,"destroyGenerator":false,"replaceObject":true,"reset":true,
 		"setSize":true,"setBackground":true,"setMax":true,"setStep":true,
 		"getId":false,"getCode":false,"getOptions":false,"getFavourites":false,"toggleFavourites":true,
-		"removeFavourites":true,"addToFavourites":true,"enablePreview":true
+		"removeFavourites":true,"addToFavourites":true,"enablePreview":true,"enableBootstrapContainer":true
 	};
 	return chain[name] != undefined ?chain[name]:false;//if the key does not exist in the above dictionary return  false else return its value
 }
@@ -155,12 +155,11 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 
 		$(document).ready(function(){
 			var host_div=gen.getId();
-			var target=!enable_bootstrap_panel?host_div+" "+gen.custom_object:host_div+"  .generatorOutput";
 			$(host_div).on("mousemove touchmove",'.radius_slider',function(){
 				//touchmove is needed for touch screens
 				gen.code=val(gen.sliders[0])+"px "+val(gen.sliders[1])+"px "+val(gen.sliders[2])+"px "+val(gen.sliders[3])+"px";
 				$(host_div+" .border_radius_code_output").text(gen.code);
-				$(target).css("border-radius",gen.code);
+				$(host_div+" .generatorOutput").css("border-radius",gen.code);
 			});
 		});
 		return gen;//return the object that called the function
@@ -247,7 +246,6 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 		var old_obj=gen.custom_object;
 		args.unshift(host);
 		var index=generators.indexOf(gen);
-		
 			$(host+" .panel").remove();
 			$(host+" .generatorContainer").remove();
 			gen.removeFavourites(true);
