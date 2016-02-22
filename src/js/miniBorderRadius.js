@@ -73,6 +73,8 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 		return gen;
 	};
 	gen.setMax=function(value){
+		if(isNaN(value))
+			throw new Error("Max value must be a number!!!");
 		if(abs(value)<$(gen.sliders[0]).prop("max")){
 			var old=$(gen.sliders[0]).prop("max");
 			gen.code=abs(value)+"px "+abs(value)+"px "+abs(value)+"px "+abs(value)+"px";
@@ -108,8 +110,7 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 		}	
 		return gen;
 	};
-	//detect if the argument passed to the function is a string or an array-list
-
+	//detect if the argument passed to the function is a string or an array
 	if(typeof args == 'string'){
 		if(!args)
 			throw new Error("Host id can't be empty !!!");
@@ -122,7 +123,7 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 	//Mind the order
 	//First append and then call init()
 	$(document).ready(function(){
-		$(gen.host_id).html(!enable_bootstrap_panel?gen.generator_markup:gen.bootstrap_markup);
+		$(gen.host_id).html(!enable_bootstrap_panel?gen.generator_markup:gen.bootstrap_markup);//determine if we want a bootstrap panel as a container for our generator or not
 		if(gen.custom_object != ".generatorOutput" && reservedItems.indexOf(gen.custom_object)==-1){
 			$(gen.host_id+" .generatorOutput").replaceWith($(gen.custom_object));
 			$(gen.custom_object).addClass('generatorOutput');
@@ -145,14 +146,12 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 		for(var i=0;i<gen.sliders.length;i++)
 			$(gen.sliders[i]).val(0);
 		$(gen.getId()+" .border_radius_code_output").text(gen.code);
-		
 		$(gen.getId()+" .generatorOutput").css("border-radius","0");
 		return gen;
 	};
 	gen.activateGenerator=function(){
 		//In order to be able to manipulate DOM properties such as the border radius of an object 
 		//in real time we have to attach an eventListener
-
 		$(document).ready(function(){
 			var host_div=gen.getId();
 			$(host_div).on("mousemove touchmove",'.radius_slider',function(){
@@ -173,11 +172,12 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 	};
 	gen.destroyGenerator=function(){
 		//Warning!!!There is no going back
-		//go to hell
+		//Burn into the deepest depths of hell :p lol
 		//sorry
 		var host=gen.getId();
 		$(host+" .generatorContainer").remove();
 		$(host+" .panel").remove();
+		generators[generators.indexOf(gen)]=null;
 	};
 	gen.replaceObject=function(object,restrict_size){
 		if(!object || object[0]=='.' || object[0] != "#")
@@ -251,8 +251,8 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 			gen.removeFavourites(true);
 			gen=new Generator(args,old_obj,true).activateGenerator(); 
 			$(host+" .generatorOutput").css('border-radius',old_code);
-			//after setting border -radius make sure to move each slider in to its old position
-			//and update the code output
+			//after setting border-radius make sure to move each slider in to its old position
+			//and update the code output panel
 			var values=old_code.match(/\d+/g);
 				for(var i=0;i<4;i++)
 					$(gen.sliders[i]).val(values[i]);
@@ -260,9 +260,9 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 			gen.options=gen.getOptions();
 			gen.code=old_code;
 			gen.favourites=old_favs;
-			//generators[index]=gen;
+			generators[index]=gen;
 		return gen;
 	};	
-	//generators.push(gen);
+	generators.push(gen);
 }//function Generator
 	
