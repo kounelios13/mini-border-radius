@@ -12,6 +12,8 @@ Resets any slider inside a generator and set the border radius property of the o
 Replace the default object where border radius is applied with another one.If you want the new object to have the same size as the previous one pass true as the second parameter in the function. .Chainable:Yes
 ##.setMax(value)
 Set the max value for all the sliders inside a generator. Chainable:Yes
+##.setStep(value)
+Set the curent step for each slider inside a generator.Chainable:Yes
 ##.setSize(height,width)  
 Sets the size of a generator.Chainable:Yes
 ##.setBackground(color,true)
