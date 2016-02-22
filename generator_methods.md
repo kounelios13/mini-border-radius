@@ -32,6 +32,8 @@ Returns favourites list.Chainable:No
 Removes favourites.Chainable:Yes
 ##.toggleFavourites()
 Toggle the list of favourites created by the current generator.Chainable:Yes
+##.downloadFavourites()
+Download favourites.Chainable:Yes
 ##.enablePreview()
 When you execute this method you are able to preview any border radius in your current favourites list just by clicking it.Chainable:Yes
 #.enableBootstrapContainer

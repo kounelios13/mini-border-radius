@@ -6,8 +6,8 @@ You have 6  ways to  create a generator
 2. ```var generator=new Generator(["#sample","10em","10em",200,'green']);```
 3. ```var generator=new Generator("#sample","#custom_generator_object");```
 4. ```var generator=new Generator("#sample","#custom_generator_object");```
-5. ```var generator=new Generator("#sample","#custom_generator_object",enable_bootstrap_container=true);```
-6. ```var generator =new Generator("#sample",null,enable_bootstrap_containe=true);```
+5. ```var generator=new Generator("#sample","#custom_generator_object",true);```
+6. ```var generator =new Generator("#sample",null,true);```
 ##.init(options)
 ```var options=["15em","15em",200,'#fa8103'] ```
  ```generator.init(["15em","15em",200,'#fa8103']);```
@@ -32,3 +32,5 @@ You have 6  ways to  create a generator
 7.  ```generator.setBackground('',true)```
 8.  ```generator.setBackground(null,true)```
     
+##.downloadFavourites()
+``` generator.downloadFavourites ```
