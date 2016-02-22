@@ -1,0 +1,33 @@
+  #generator_methods{
+    display: iherit;
+  }
+ #generators .more_generators{
+    display: block !important;
+  }
+  body{
+		background: rgb(69,109,221);
+	}
+	.more_generators{
+		display: none;	
+	}
+	p{
+		font-size: 17px;
+	}
+	.rep{
+		height: 14em;
+		width: 14em;
+		background: rgb(255, 215, 0);
+		margin: auto;
+	}
+	#demo_object_1{
+		height: 20em;
+		width: 20em;
+		border:3px solid dodgerblue;
+		background: aliceblue;
+	}
+	#image{
+		display: block;
+		height: 20em;
+		width: 20em;
+		margin: auto;
+	}
