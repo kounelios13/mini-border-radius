@@ -5,38 +5,10 @@
 	<title>Mini border radius generator</title>
 	<link rel="stylesheet" href="src/bower_components/bootstrap/dist/css/bootstrap.min.css"> 
 	<link rel="stylesheet" href="src/css/miniBorderRadius.css">
+	<link rel="stylesheet" href="src/css/demo.css">
 	<script src='src/bower_components/jquery/dist/jquery.min.js'></script>
 	<script src="src/js/miniBorderRadius.js"></script>
 	<script src="src/js/demo.js"></script>
-	<style>
-	body{
-		background: rgb(69,109,221);
-	}
-	.more_generators{
-		display: none;	
-	}
-	p{
-		font-size: 17px;
-	}
-	.rep{
-		height: 14em;
-		width: 14em;
-		background: gold;
-		margin: auto;
-	}
-	#demo_object_1{
-		height: 20em;
-		width: 20em;
-		border:3px solid dodgerblue;
-		background: aliceblue;
-	}
-	#image{
-		display: block;
-		height: 20em;
-		width: 20em;
-		margin: auto;
-	}
-	</style>
 </head>
 <body>
 	<div id="setup_instructions" class="container">
@@ -89,6 +61,8 @@
 		<div class="btn btn-primary" onclick="gen.addToFavourites()">Add code to favourites</div>
 		<div class="btn btn-primary" onclick="gen.toggleFavourites()">Toggle favourites</div>
 		<div class="btn btn-primary" onclick="gen.enablePreview()">Enable preview</div>
+		<div class="btn btn-primary" onclick="gen.setBackground(prompt('Give a color name'))">Change background</div>
+		<div id="enable_all" class="btn btn-info">Magic</div>
 		<h1>
 			<em>Wait.nothing happend</em>
 		</h1>
@@ -119,6 +93,7 @@
 		<div class="btn btn-info" onclick="$('#generator_methods').toggle(980)">Toggle methods</div>
 	</div>
 	<div class="container" id="generator_methods">
+		<h2 class="text-warning text-center">Not all methods are listed here.To see a list with all the available methods open the manual.pdf file</h2>
 		<div class="panel panel-info">
 			<div class="panel-heading">.activateGenerator()</div>
 			<div class="panel-body">This is the main function that activates the generator.Chainable:Yes</div>
@@ -140,12 +115,8 @@
 			<div class="panel-body">Does what it says :p</div>
 		</div>
 		<div class="panel panel-info">
-			<div class="panel-heading">.setMax(value)</div>
-			<div class="panel-body">Set the maximum value for all the sliders inside a generator.Chainable:Yes</div>
-		</div>
-		<div class="panel panel-info">
-			<div class="panel-heading">.setBackground(color)</div>
-			<div class="panel-body">set the background color of a generator.Chainable:Yes</div>
+			<div class="panel-heading">.setBackground(color,true)</div>
+			<div class="panel-body">set the background color of a generator.If true is passed as second argument a random color will be choosen.Chainable:Yes</div>
 		</div>
 		<div class="panel panel-info">
 			<div class="panel-heading">.init(options)</div>
@@ -154,10 +125,6 @@
 		<div class="panel panel-info">
 			<div class="panel-heading">.getCode()</div>
 			<div class="panel-body">Gets the code generated from a miniRadiusGenerator.Chainable:No</div>
-		</div>
-		<div class="panel panel-info">
-			<div class="panel-heading">.getOptions()</div>
-			<div class="panel-body">Returns a list with the default options of the generator.Chainable:No</div>
 		</div>
 		<div class="panel panel-info">
 			<div class="panel-heading">.getId()</div>
@@ -175,22 +142,15 @@
 			<div class="panel-heading">.removeFavourites()</div>
 			<div class="panel-body">Removes favourites.Chainable:Yes</div>
 		</div>
-		<div class="panel panel-info">
-			<div class="panel-heading">.toggleFavourites()</div>
-			<div class="panel-body">Toggle the favourites list created by the current generator.Chainable:Yes</div>
-		</div>
-		<div class="panel panel-info">
-			<div class="panel-heading">.enablePreview()</div>
-			<div class="panel-body">When you execute this method you are able to preview any border radius in your current favourites list just by clicking it.Chainable:Yes</div>
-		</div>
 		<p>
 			If you don't remember wheter a function is chainable or not you can call  isChainable(name) and pass teh name of the function you want to check.You will get a true or false.For example the following: <code>console.log(isChainable("init")) ;</code> will log true because init function is chainable.You will get the same output if you write <code>console.log(isChainable(".init"));</code> or <code>console.log(isChainable(".init()"));</code>.
 		</p>
 	</div>
-	<div id="generators">
+	<div id="generators" style="display: inherit;">
 		<div id="sample2" class="container more_generators"></div>
 		<div id="sample3" class="container more_generators"></div>
 		<div id="sample4" class="container more_generators"></div>	
+		<div id="sample5" class="container more_generators"></div>	
 	</div>
 	<div id="demo_object_2" class="rep"></div>
 	<div id="demo_object_3" class="rep"></div>
