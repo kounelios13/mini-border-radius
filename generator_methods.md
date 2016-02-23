@@ -46,4 +46,4 @@ For example: isChainable("activateGenerator") will return true
 ###If you want to know wheter a function is chainable or not you can call the the isChainable function and pass the name of the function you want to know about.You will get a true or false.
 For exampe:
     ```isChainable("getId")``` will return false.
->>>>>>> origin/manual_book
+
