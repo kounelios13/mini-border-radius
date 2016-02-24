@@ -214,7 +214,6 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 		return gen.favourites;
 	};
 	gen.toggleFavourites=function(){
-		var x=$(gen.getId()+"  .list-group");
 		$(gen.getId()+"  .favourites li").toggle(800);
 		return gen;
 	};
@@ -230,8 +229,19 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 		for(var i=0,max=items.length;i<max;i++)
 			file+="border-radius:"+items[i]+";\n";
 		file+="\n*****miniBorderRadius plugin\n\n visit https://github.com/kounelios13/mini-border-radius to see more.\n****/";
-		var blob = new Blob([file], {type: "text/plain;charset=utf-8"});
-		saveAs(blob,"favourites.css");
+		try{
+			var blob = new Blob([file], {type: "text/plain;charset=utf-8"});
+			saveAs(blob,"favourites.css");	
+		}
+		catch(e){
+			switch(e.message){
+				case "saveAs is not defined":
+					alert('FileSaver.js was not found');
+					break;
+				default:
+					alert("An error occured"+e.message);	
+			}//switch
+		}//catch
 	};
 	gen.enablePreview=function(){
 		$(document).ready(function(){
@@ -254,10 +264,8 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 		var old_favs=gen.favourites;
 		var old_obj=gen.custom_object;
 		args.unshift(host);
+		var isFavouritesListVisible=$(host+" .list-group li").is(":visible");
 		var index=generators.indexOf(gen);
-			$(host+" .panel").remove();
-			$(host+" .generatorContainer").remove();
-			gen.removeFavourites(true);
 			gen=new Generator(args,old_obj,true).activateGenerator(); 
 			$(host+" .generatorOutput").css('border-radius',old_code);
 			//after setting border-radius make sure to move each slider in to its old position
@@ -266,6 +274,13 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 				for(var i=0;i<4;i++)
 					$(gen.sliders[i]).val(values[i]);
 			$(host+" .border_radius_code_output").text(old_code);	
+			var old_list="";
+			for(var i=0;i<old_favs.length;i++)
+				old_list+="<li class='generator_favourites list-group-item'>border-radius:"+old_favs[i]+";</li>\n";
+			$(host+" .list-group").append(old_list);
+			//Check if the favourites were visible before replacing the default container with a bootstrap panel
+			//If true make them visible again
+			$(host+" .list-group li").toggle(isFavouritesListVisible);
 			gen.options=gen.getOptions();
 			gen.code=old_code;
 			gen.favourites=old_favs;
