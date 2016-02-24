@@ -1,11 +1,11 @@
 {
   "name": "mini-border-radius",
-  "homepage": "https://github.com/kounelios13/mini-border-radius",
+  "homepage": "https://kounelios13.github.io/mini-border-radius",
   "authors": [
     "kounelios13 <pkounelios@gmail.com>"
   ],
   "description": "A simple and light javascript class that can add multiple border radius generators inside a web page",
-  "main": "demo.html",
+  "main": "src/js/miniBorderRadius.js",
   "moduleType": [],
   "license": "MIT",
   "private": true,
