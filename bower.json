@@ -4,6 +4,7 @@
   "authors": [
     "kounelios13 <pkounelios@gmail.com>"
   ],
+  "version":"1.4.1",
   "description": "Add a mini border radius generator to your website",
   "main": "../js/miniBorderRadius.js",
   "moduleType": [],
@@ -12,7 +13,6 @@
     "bootstrap"
   ],
   "license": "MIT",
-  "private": true,
   "ignore": [
     "**/.*",
     "node_modules",
