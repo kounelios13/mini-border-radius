@@ -6,6 +6,7 @@
 	<link rel="stylesheet" href="src/bower_components/bootstrap/dist/css/bootstrap.min.css"> 
 	<link rel="stylesheet" href="src/css/miniBorderRadius.css">
 	<link rel="stylesheet" href="src/css/demo.css">
+	<script src='src/bower_components/Filesaver.js/Filesaver.min.js'></script>
 	<script src='src/bower_components/jquery/dist/jquery.min.js'></script>
 	<script src="src/js/miniBorderRadius.js"></script>
 	<script src="src/js/demo.js"></script>
@@ -61,7 +62,9 @@
 		<div class="btn btn-primary" onclick="gen.addToFavourites()">Add code to favourites</div>
 		<div class="btn btn-primary" onclick="gen.toggleFavourites()">Toggle favourites</div>
 		<div class="btn btn-primary" onclick="gen.enablePreview()">Enable preview</div>
-		<div class="btn btn-primary" onclick="gen.setBackground(prompt('Give a color name'))">Change background</div>
+		<div class="btn btn-primary" onclick="gen.setBackground(prompt('Give a color name'))">
+		Change background</div>
+		<div  class="btn btn-info" onclick="gen.downloadFavourites()">Download favourites</div>
 		<div id="enable_all" class="btn btn-info">Magic</div>
 		<h1>
 			<em>Wait.nothing happend</em>
