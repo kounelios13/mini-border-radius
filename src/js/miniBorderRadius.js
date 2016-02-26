@@ -23,7 +23,7 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 	//to avoid using 'this' all the time we create a self reference
 	//and we use it
 	var gen=this;
-	gen.code='0px 0px 0px 0px';
+	gen.code=undefined;
 	var val=function(o){
 		return $(o).val();
 	}
