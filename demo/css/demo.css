@@ -23,8 +23,10 @@ code pre,pre code{
 
 .top_right_corner,.bottom_right_corner{
 	float: right;
+	width: 25% !important;
 }
 .top_left_corner,.bottom_left_corner{
 	float: left;
+	width: 25% !important;
 	/* 27 */
 }
