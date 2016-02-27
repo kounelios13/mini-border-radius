@@ -21,9 +21,10 @@ code pre,pre code{
     border-radius: 4px;
 }
 
-.top_left_corner,.bottom_left_corner{
-	float: left;
-}
 .top_right_corner,.bottom_right_corner{
 	float: right;
+}
+.top_left_corner,.bottom_left_corner{
+	float: left;
+	/* 27 */
 }
