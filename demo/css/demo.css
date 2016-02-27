@@ -20,9 +20,9 @@ code pre,pre code{
     background-color: #f9f2f4;
     border-radius: 4px;
 }
-.top-left-corner,.bottom-left-corner{
+.top_left_corner,.bottom_left_corner{
 	float: left;
 }
-.top-right-corner,.bottom-right-corner{
+.top_right_corner,.bottom_right_corner{
 	float: right;
 }
