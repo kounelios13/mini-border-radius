@@ -22,81 +22,84 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 	function abs(a){return Math.abs(a);}
 	//to avoid using 'this' all the time we create a self reference
 	//and we use it
-	var gen=this;
-	gen.code=undefined;
+	var self=this;
+	self.code=undefined;
 	var val=function(o){
 		return $(o).val();
 	}
-	gen.host_id='';
-	gen.custom_object=custom_object||".generatorOutput";
-	gen.options=["10em","10em",100,"maroon"];
-	gen.sliders=[];
-	gen.favourites=[];
-	gen.colors=["#fabb00","rgb(255,53,0)","rgb(3,86,255)","rgb(20, 77, 239)","#107B9E"];
-	gen.generator_markup="<div class='generatorContainer'>\n";
-	gen.generator_markup+="<input type='range' class='radius_slider top_left_corner'  min='0' max='100' value='0'>\n";
-	gen.generator_markup+="<input type='range' class='radius_slider top_right_corner' min='0' max='100' value='0'>\n";
-	gen.generator_markup+="<div class='generatorOutput'></div>\n";
-	gen.generator_markup+="<input type='range' class='radius_slider bottom_right_corner' min='0' max='100' value='0'>\n";
-	gen.generator_markup+="<input type='range' class='radius_slider bottom_left_corner'  min='0' max='100' value='0'></div>\n";
-	gen.generator_markup+="<div class='panel panel-primary'>\n<div class='panel-body text-center bg-success'>";
-	gen.generator_markup+="border-radius: <span class='border_radius_code_output'>0px 0px 0px 0px</span>;\n</div>";
-	gen.generator_markup+="</div><ul class='list-group favourites'></ul>\n</div>";
-	gen.bootstrap_markup="<div class='panel panel-primary'><div class='panel-heading text-center'>Generator</div><div class='panel-body'>"+gen.generator_markup+"</div></div>";
-	gen.setSize=function(height,width){
-		var host_div=gen.host_id;
-		var target=!enable_bootstrap_panel?host_div+" "+gen.custom_object:host_div+" .generatorOutput";
-		gen.options[0]=height;
-		gen.options[1]=width;
+	self.host_id='';
+	self.custom_object=custom_object||".generatorOutput";
+	self.options=["10em","10em",100,"maroon"];
+	self.sliders=[];
+	self.favourites=[];
+	self.colors=["#fabb00","rgb(255,53,0)","rgb(3,86,255)","rgb(20, 77, 239)","#107B9E"];
+	self.generator_markup="<div class='generatorContainer'>\n";
+	self.generator_markup+="<input type='range' class='radius_slider top_left_corner'  min='0' max='100' value='0'>\n";
+	self.generator_markup+="<input type='range' class='radius_slider top_right_corner' min='0' max='100' value='0'>\n";
+	self.generator_markup+="<div class='generatorOutput'></div>\n";
+	self.generator_markup+="<input type='range' class='radius_slider bottom_right_corner' min='0' max='100' value='0'>\n";
+	self.generator_markup+="<input type='range' class='radius_slider bottom_left_corner'  min='0' max='100' value='0'></div>\n";
+	self.generator_markup+="<div class='panel panel-primary'>\n<div class='panel-body text-center bg-success'>";
+	self.generator_markup+="border-radius: <span class='border_radius_code_output'>0px 0px 0px 0px</span>;\n</div>";
+	self.generator_markup+="</div><ul class='list-group favourites'></ul>\n</div>";
+	self.bootstrap_markup="<div class='panel panel-primary'><div class='panel-heading text-center'>Generator</div><div class='panel-body'>"+self.generator_markup+"</div></div>";
+	self.getId=function(){
+		return self.host_id;
+	}
+	self.setSize=function(height,width){
+		var host_div=self.host_id;
+		var target=!enable_bootstrap_panel?host_div+" "+self.custom_object:host_div+" .generatorOutput";
+		self.options[0]=height;
+		self.options[1]=width;
 		$(target).height(height).width(width);
-		return gen;
+		return self;
 	};
-	gen.setBackground=function(bg,random_color){
-		var host_div=gen.host_id;
-		var target=!enable_bootstrap_panel?host_div+" "+gen.custom_object:host_div+" .generatorOutput";
+	self.setBackground=function(bg,random_color){
+		var host_div=self.host_id;
+		var target=!enable_bootstrap_panel?host_div+" "+self.custom_object:host_div+" .generatorOutput";
 		if(bg)
-			gen.colors.push(bg);
+			self.colors.push(bg);
 		function ranColor(){
-			return gen.colors[Math.round(Math.random()* gen.colors.length)];
+			return self.colors[Math.round(Math.random()* self.colors.length)];
 		};
 		var color=!random_color?bg:ranColor();
-		gen.options[3]=color;
+		self.options[3]=color;
 		$(target).css("background",color,'!important');
-		return gen;
+		return self;
 	};
-	gen.setStep=function (step) {
-		var isValidStep=abs(step)<=$(gen.sliders[0]).prop("max") && !isNaN(step) && step;
+	self.setStep=function (step) {
+		step=abs(step);
+		var isValidStep=abs(step)<=$(self.sliders[0]).prop("max") && !isNaN(step) && step;
 		if(!isValidStep)
 			throw new Error(!step?"Invalid value":isNaN(step)?"Invalid step value":"Step value is greater than max value");
-		for(var i=0;i<4;i++)
-			$(gen.sliders[i]).prop("step",abs(step));
-		return gen;
+		$(self.getId()+" input[type='range']").prop("step",step);
+		return self;
 	};
-	gen.setMax=function(value){
+	self.setMax=function(value){
+		value=abs(value);
 		if(isNaN(value))
 			throw new Error("Max value must be a number!!!");
-		if(abs(value)<$(gen.sliders[0]).prop("max")){
-			var old=$(gen.sliders[0]).prop("max");
-			gen.code=abs(value)+"px "+abs(value)+"px "+abs(value)+"px "+abs(value)+"px";
-			$(gen.host_id+" .border_radius_code_output").text(gen.code);
-			$(gen.getId()+" "+gen.custom_object).css("border-radius",gen.code);	
+		if(value<$(self.sliders[0]).prop("max")){
+			var old=$(self.sliders[0]).prop("max");
+			self.code=value+"px "+value+"px "+value+"px "+value+"px";
+			$(self.getId()+" .border_radius_code_output").text(self.code);
+			$(self.getId()+" "+self.custom_object).css("border-radius",self.code);	
 		}
-		for(var x=0,max=gen.sliders.length;x<max;x++)
-			try{
-				//Even if the use enters a negative value there won't be any problem since Math.abs will allways return a possitive value
-				$(gen.sliders[x]).prop("max",Math.abs(value));
-				gen.options[2]=Math.abs(value);
-			}
-			catch(e){
-				//That does not mean we want to let the user enter a non numerical value
-				throw new Error("(T)error occured:"+e );			
-			}
-		return gen;
+		try{
+			//Even if the use enters a negative value there won't be any problem since abs will allways return a possitive value
+			$(self.host_id+" input[type='range']").prop("max",value);
+			self.options[2]=value;
+		}
+		catch(e){
+			//That does not mean we want to let the user enter a non numerical value
+			throw new Error("(T)error occured:"+e );			
+		}
+		return self;
 	};
-	gen.getOptions=function(){
-		return gen.options;
+	self.getOptions=function(){
+		return self.options;
 	};
-	gen.init=function(options){
+	self.init=function(options){
 		//here we pass an array of default args-options with the following order
 		//height,width,max,background_color
 		if(!options)
@@ -105,81 +108,79 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 			throw new Error("Expected 4 parameters but got "+options.length+" parameters");
 		}
 		else{
-			gen.options=options;
-			gen.setSize(options[0],options[1]).setMax(options[2]).setBackground(options[3]);
+			self.options=options;
+			self.setSize(options[0],options[1]).setMax(options[2]).setBackground(options[3]);
 		}	
-		return gen;
+		return self;
 	};
 	//detect if the argument passed to the function is a string or an array
 	if(typeof args == 'string'){
 		if(!args)
 			throw new Error("Host id can't be empty !!!");
-		gen.host_id=args;
+		self.host_id=args;
 	}
 	else{
-		gen.host_id=args[0];
-		gen.options=args.slice(1);//remove the id of the host container and return the remaining items of the list(height,width,max_value,bg)	
+		self.host_id=args[0];
+		self.options=args.slice(1);//remove the id of the host container and return the remaining items of the list(height,width,max_value,bg)	
 	}
 	//Mind the order
 	//First append and then call init()
 	$(document).ready(function(){
-		$(gen.host_id).html(!enable_bootstrap_panel?gen.generator_markup:gen.bootstrap_markup);//determine if we want a bootstrap panel as a container for our generator or not
-		if(gen.custom_object != ".generatorOutput" && reservedItems.indexOf(gen.custom_object)==-1){
-			$(gen.host_id+" .generatorOutput").replaceWith($(gen.custom_object));
-			$(gen.custom_object).addClass('generatorOutput');
-			reservedItems.push(gen.custom_object);
+		$(self.host_id).html(!enable_bootstrap_panel?self.generator_markup:self.bootstrap_markup);//determine if we want a bootstrap panel as a container for our generator or not
+		if(self.custom_object != ".generatorOutput" && reservedItems.indexOf(self.custom_object)==-1){
+			$(self.getId()+" .generatorOutput").replaceWith($(self.custom_object));
+			$(self.custom_object).addClass('generatorOutput');
+			reservedItems.push(self.custom_object);
 		}
-		gen.init(gen.getOptions());
-		gen.sliders=$(gen.host_id+" .radius_slider");
+		self.init(self.getOptions());
+		self.sliders=$(self.getId()+" .radius_slider");
 	});
-	gen.getCode=function(){
-		return gen.code;
+	self.getCode=function(){
+		return self.code;
 	};
-	gen.getOptions=function(){
-		return gen.options;
+	self.getOptions=function(){
+		return self.options;
 	};
-	gen.getId=function(){
-		return gen.host_id;
-	}
-	gen.reset=function(){
-		gen.code="0px 0px 0px 0px";
-		for(var i=0;i<gen.sliders.length;i++)
-			$(gen.sliders[i]).val(0);
-		$(gen.getId()+" .border_radius_code_output").text(gen.code);
-		$(gen.getId()+" .generatorOutput").css("border-radius","0");
-		return gen;
+	
+	self.reset=function(){
+		self.code="0px 0px 0px 0px";
+		for(var i=0;i<self.sliders.length;i++)
+			$(self.sliders[i]).val(0);
+		$(self.getId()+" .border_radius_code_output").text(self.code);
+		$(self.getId()+" .generatorOutput").css("border-radius","0");
+		return self;
 	};
-	gen.activateGenerator=function(){
+	self.activateGenerator=function(){
 		//In order to be able to manipulate DOM properties such as the border radius of an object 
 		//in real time we have to attach an eventListener
 		$(document).ready(function(){
-			var host_div=gen.getId();
+			var host_div=self.getId();
 			$(host_div).on("mousemove touchmove",'.radius_slider',function(){
 				//touchmove is needed for touch screens
-				gen.code=val(gen.sliders[0])+"px "+val(gen.sliders[1])+"px "+val(gen.sliders[2])+"px "+val(gen.sliders[3])+"px";
-				$(host_div+" .border_radius_code_output").text(gen.code);
-				$(host_div+" .generatorOutput").css("border-radius",gen.code);
+				self.code=val(self.sliders[0])+"px "+val(self.sliders[1])+"px "+val(self.sliders[2])+"px "+val(self.sliders[3])+"px";
+				$(host_div+" .border_radius_code_output").text(self.code);
+				$(host_div+" .generatorOutput").css("border-radius",self.code);
 			});
 		});
-		return gen;//return the object that called the function
+		return self;//return the object that called the function
 	};
-	gen.deactivateGenerator=function(){
+	self.deactivateGenerator=function(){
 		$(document).ready(function(){
-			gen.reset();//First reset the generator 
-			$(gen.getId()).off();//Unregister any event listeners attached to the generator
+			self.reset();//First reset the generator 
+			$(self.getId()).off();//Unregister any event listeners attached to the generator
 		});
-		return gen;//return the object that called the function to be able to chain functions
+		return self;//return the object that called the function to be able to chain functions
 	};
-	gen.destroyGenerator=function(){
+	self.destroyGenerator=function(){
 		//Warning!!!There is no going back
 		//Burn into the depths of hell :p lol
 		//sorry
-		var host=gen.getId();
+		var host=self.getId();
 		$(host+" .generatorContainer").remove();
 		$(host+" .panel").remove();
-		//generators[generators.indexOf(gen)]=null; we might want to keep the data from that generator
+		//generators[generators.indexOf(self)]=null; we might want to keep the data from that generator
 	};
-	gen.replaceObject=function(object,restrict_size){
+	self.replaceObject=function(object,restrict_size){
 		if(!object || object[0]=='.' || object[0] != "#")
 			throw new Error(!object?"Invalid object detected":"Class detected.Please switch to an object with id insted of class");
 		if(reservedItems.indexOf(object)==-1)
@@ -188,44 +189,44 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 			throw new Error("This object is already being used.!!!!");
 		$(object).addClass("center-block");
 		$(object).addClass("generatorOutput");
-		$(gen.getId()+" "+gen.custom_object).replaceWith($(object));
-		gen.custom_object=object;
+		$(self.getId()+" "+self.custom_object).replaceWith($(object));
+		self.custom_object=object;
 		//Check the current border radius and apply it to the new object
-		$(object).css("border-radius",gen.code);//apply the same radius as the object that was replaced
+		$(object).css("border-radius",self.code);//apply the same radius as the object that was replaced
 		if(!restrict_size)
-			gen.options=[$(object).css("height"),$(object).css("width"),gen.options[2],$(object).css("background")];
+			self.options=[$(object).css("height"),$(object).css("width"),self.options[2],$(object).css("background")];
 		else
-			gen.options=[gen.options[0],gen.options[1],gen.options[2],$(object).css("background")];
-		gen.init(gen.options);
-		return gen;//return the object that called the function
+			self.options=[self.options[0],self.options[1],self.options[2],$(object).css("background")];
+		self.init(self.options);
+		return self;//return the object that called the function
 	};
-	gen.addToFavourites=function(){
-		$(gen.getId()+"  .favourites li").show();
-		if(gen.favourites.indexOf(gen.code)==-1 && gen.code != undefined)
-			gen.favourites.push(gen.code);
+	self.addToFavourites=function(){
+		$(self.getId()+"  .favourites li").show();
+		if(self.favourites.indexOf(self.code)==-1 && self.code != undefined)
+			self.favourites.push(self.code);
 		else
-			return gen;//the code exists so exit the function
-		//buggy function lol somebody fix gen shit
+			return self;//the code exists so exit the function
+		//buggy function lol somebody fix self shit
 		//not that buggy anymore :)
-		$(gen.getId()+" ul.favourites").append("<li class='generator_favourites list-group-item'>border-radius:"+gen.code+";</li>");
-		return gen;
+		$(self.getId()+" ul.favourites").append("<li class='generator_favourites list-group-item'>border-radius:"+self.code+";</li>");
+		return self;
 	};
-	gen.getFavourites=function(){
-		return gen.favourites;
+	self.getFavourites=function(){
+		return self.favourites;
 	};
-	gen.toggleFavourites=function(){
-		$(gen.getId()+"  .favourites li").toggle(800);
-		return gen;
+	self.toggleFavourites=function(){
+		$(self.getId()+"  .favourites li").toggle(800);
+		return self;
 	};
-	gen.removeFavourites=function(preserve){
+	self.removeFavourites=function(preserve){
 		if(!preserve)//in case we only want to remove  all list items in the page but keep the actual array 
-			gen.favourites.length=0;
-		$(gen.getId()+" .favourites li").remove();
-		return gen;
+			self.favourites.length=0;
+		$(self.getId()+" .favourites li").remove();
+		return self;
 	};
-	gen.downloadFavourites=function(){
+	self.downloadFavourites=function(){
 		var file="/********\n";
-		var items=gen.getFavourites();
+		var items=self.getFavourites();
 		if(items.length<1){
 			alert("No favourites to download.");
 			throw new Error("No items to download");
@@ -249,36 +250,36 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 			}//switch
 		}//catch
 	};
-	gen.enablePreview=function(){
+	self.enablePreview=function(){
 		$(document).ready(function(){
-			var host=gen.getId();
-			$(document).on("click",gen.getId()+" li",function(){
+			var host=self.getId();
+			$(document).on("click",self.getId()+" li",function(){
 				var values=$(this).text().match(/\d+/g);
 				for(var i=0;i<4;i++)
-					$(gen.sliders[i]).val(values[i]);
-				gen.code=$(this).text().split(":")[1].split(';')[0];
-				$(gen.getId()+" "+gen.custom_object).css("border-radius",gen.code);
-				$(gen.getId()+" .border_radius_code_output").text(gen.code);
+					$(self.sliders[i]).val(values[i]);
+				self.code=$(this).text().split(":")[1].split(';')[0];
+				$(self.getId()+" "+self.custom_object).css("border-radius",self.code);
+				$(self.getId()+" .border_radius_code_output").text(self.code);
 			});
 		});
-		return gen;
+		return self;
 	};
-	gen.enableBootstrapContainer=function(){
-		var host=gen.getId();
-		var args=gen.options;
-		var old_code=gen.getCode();
-		var old_favs=gen.favourites;
-		var old_obj=gen.custom_object;
+	self.enableBootstrapContainer=function(){
+		var host=self.getId();
+		var args=self.options;
+		var old_code=self.getCode();
+		var old_favs=self.favourites;
+		var old_obj=self.custom_object;
 		args.unshift(host);
 		var isFavouritesListVisible=$(host+" .list-group li").is(":visible");
-		var index=generators.indexOf(gen);
-			gen=new Generator(args,old_obj,true).activateGenerator(); 
+		var index=generators.indexOf(self);
+			self=new Generator(args,old_obj,true).activateGenerator(); 
 			$(host+" .generatorOutput").css('border-radius',old_code);
 			//after setting border-radius make sure to move each slider in to its old position
 			//and update the code output panel
 			var values=old_code.match(/\d+/g);
 				for(var i=0;i<4;i++)
-					$(gen.sliders[i]).val(values[i]);
+					$(self.sliders[i]).val(values[i]);
 			$(host+" .border_radius_code_output").text(old_code);	
 			var old_list="";
 			for(var i=0;i<old_favs.length;i++)
@@ -287,12 +288,12 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 			//Check if the favourites were visible before replacing the default container with a bootstrap panel
 			//If true make them visible again
 			$(host+" .list-group li").toggle(isFavouritesListVisible);
-			gen.options=gen.getOptions();
-			gen.code=old_code;
-			gen.favourites=old_favs;
-			generators[index]=gen;
-		return gen;
+			self.options=self.getOptions();
+			self.code=old_code;
+			self.favourites=old_favs;
+			generators[index]=self;
+		return self;
 	};	
-	generators.push(gen);
+	generators.push(self);
 }//function Generator
 	
