@@ -4,9 +4,9 @@
   "authors": [
     "kounelios13 <pkounelios@gmail.com>"
   ],
-  "version":"1.4.3.1",
+  "version":"1.4.4",
   "description": "Add a mini border radius generator to your website",
-  "main": "../js/miniBorderRadius.js",
+  "main": "/js/miniBorderRadius.js",
   "moduleType": [],
   "keywords": [
     "jquery",
