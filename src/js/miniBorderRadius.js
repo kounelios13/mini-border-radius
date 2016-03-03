@@ -11,7 +11,8 @@ function isChainable(name){
 	var chain={"init":true,"activateGenerator":true,"deactivateGenerator":true,"destroyGenerator":false,"replaceObject":true,"reset":true,
 		"setSize":true,"setBackground":true,"setMax":true,"setStep":true,
 		"getId":false,"getCode":false,"getOptions":false,"getFavourites":false,"toggleFavourites":true,
-		"removeFavourites":true,"addToFavourites":true,"downloadFavourites":true,"enablePreview":true,"enableBootstrapContainer":true
+		"removeFavourites":true,"addToFavourites":true,"downloadFavourites":true,"enablePreview":true,"enableBootstrapContainer":true,
+		"getBackup":false,"restoreBackup":true
 	};
 	return chain[name] != undefined ?chain[name]:false;//if the key does not exist in the above dictionary return  false else return its value
 }
@@ -23,11 +24,12 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 	//to avoid using 'this' all the time we create a self reference
 	//and we use it
 	var self=this;
-	self.code=undefined;
+	self.code=null;
 	var val=function(o){
 		return $(o).val();
 	}
-	self.host_id='';
+	self.host_id=null;
+	self.backup=null;
 	self.custom_object=custom_object||".generatorOutput";
 	self.options=["10em","10em",100,"maroon"];
 	self.sliders=[];
@@ -125,16 +127,38 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 	}
 	//Mind the order
 	//First append and then call init()
-	$(document).ready(function(){
-		$(self.host_id).html(!enable_bootstrap_panel?self.generator_markup:self.bootstrap_markup);//determine if we want a bootstrap panel as a container for our generator or not
-		if(self.custom_object != ".generatorOutput" && reservedItems.indexOf(self.custom_object)==-1){
-			$(self.getId()+" .generatorOutput").replaceWith($(self.custom_object));
-			$(self.custom_object).addClass('generatorOutput');
-			reservedItems.push(self.custom_object);
+	var render=function(){
+		var host=self.getId();
+		if(host != null && host[0]=='#')
+			$(document).ready(function(){
+				self.backup=$(host).html();
+				$(host).html(!enable_bootstrap_panel?self.generator_markup:self.bootstrap_markup);//determine if we want a bootstrap panel as a container for our generator or not
+				if(self.custom_object != ".generatorOutput" && reservedItems.indexOf(self.custom_object)==-1){
+					$(host+" .generatorOutput").replaceWith($(self.custom_object));
+					$(self.custom_object).addClass('generatorOutput');
+					reservedItems.push(self.custom_object);
+				}
+				self.init(self.getOptions());
+				self.sliders=$(host+" .radius_slider");
+			});	
+		else
+			throw new Error("Generator could not be rendered!!!");
+	};
+	self.getBackup=function(){
+		return self.backup;
+	};
+	self.restoreBackup=function(destination){
+		if(!destination)
+			throw new Error("Invalid destination!!!");
+		if(destination[0]=='.'){
+			var answer=confirm("You are going to create duplicates of your backed content.Are you sure you want to continue");
+			if(answer)
+				$(destination).html(self.getBackup());
 		}
-		self.init(self.getOptions());
-		self.sliders=$(self.getId()+" .radius_slider");
-	});
+		else
+			$(destination).html(self.getBackup());
+		return self;
+	};
 	self.getCode=function(){
 		return self.code;
 	};
@@ -143,11 +167,11 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 	};
 	
 	self.reset=function(){
+		var host=self.getId();
 		self.code="0px 0px 0px 0px";
-		for(var i=0;i<self.sliders.length;i++)
-			$(self.sliders[i]).val(0);
-		$(self.getId()+" .border_radius_code_output").text(self.code);
-		$(self.getId()+" .generatorOutput").css("border-radius","0");
+		self.sliders.val(0);
+		$(host+" .border_radius_code_output").text(self.code);
+		$(host+" .generatorOutput").css("border-radius","0");
 		return self;
 	};
 	self.activateGenerator=function(){
@@ -295,5 +319,6 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 		return self;
 	};	
 	generators.push(self);
+	render();
 }//function Generator
 	
