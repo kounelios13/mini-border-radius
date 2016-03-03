@@ -20,6 +20,10 @@ Sets the size of a generator.Chainable:Yes
 Sets the background color of a generator.When true is passed as second argument a random color will be selected.Chainable:Yes
 ##.init(options)
 This function accepts a list of 4 default options:height,width,max_value,default_background.Chainable:Yes
+##getBackup()
+Return the elements that were removed when the generator was created.Chainable:No
+##restoreBackup(destination)
+Restore the backup to the specified destination.Chainable:Yes
 ##.getCode()
 Gets the code generated from a miniRadiusGenerator.Chainable:No
 ##.getId()
