@@ -179,9 +179,10 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 		//in real time we have to attach an eventListener
 		$(document).ready(function(){
 			var host_div=self.getId();
+			var sliders=self.sliders;
 			$(host_div).on("mousemove touchmove",'.radius_slider',function(){
 				//touchmove is needed for touch screens
-				self.code=val(self.sliders[0])+"px "+val(self.sliders[1])+"px "+val(self.sliders[2])+"px "+val(self.sliders[3])+"px";
+				self.code=val(sliders[0])+"px "+val(sliders[1])+"px "+val(sliders[2])+"px "+val(sliders[3])+"px";
 				$(host_div+" .border_radius_code_output").text(self.code);
 				$(host_div+" .generatorOutput").css("border-radius",self.code);
 			});
@@ -225,14 +226,16 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 		return self;//return the object that called the function
 	};
 	self.addToFavourites=function(){
-		$(self.getId()+"  .favourites li").show();
-		if(self.favourites.indexOf(self.code)==-1 && self.code != undefined)
-			self.favourites.push(self.code);
+		var host=self.getId();
+		var code=self.getCode();
+		$(host+"  .favourites li").show();
+		if(self.favourites.indexOf(code)==-1 && code != undefined)
+			self.favourites.push(code);
 		else
 			return self;//the code exists so exit the function
 		//buggy function lol somebody fix self shit
 		//not that buggy anymore :)
-		$(self.getId()+" ul.favourites").append("<li class='generator_favourites list-group-item'>border-radius:"+self.code+";</li>");
+		$(host+" ul.favourites").append("<li class='generator_favourites list-group-item'>border-radius:"+code+";</li>");
 		return self;
 	};
 	self.getFavourites=function(){
@@ -282,8 +285,8 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 				for(var i=0;i<4;i++)
 					$(self.sliders[i]).val(values[i]);
 				self.code=$(this).text().split(":")[1].split(';')[0];
-				$(self.getId()+" "+self.custom_object).css("border-radius",self.code);
-				$(self.getId()+" .border_radius_code_output").text(self.code);
+				$(host+" "+self.custom_object).css("border-radius",self.code);
+				$(host+" .border_radius_code_output").text(self.code);
 			});
 		});
 		return self;
