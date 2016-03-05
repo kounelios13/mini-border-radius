@@ -36,15 +36,19 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 	self.sliders=[];
 	self.favourites=[];
 	self.colors=["#fabb00","rgb(255,53,0)","rgb(3,86,255)","rgb(20, 77, 239)","#107B9E"];
-	self.generator_markup="<div class='generatorContainer'>\n";
-	self.generator_markup+="<input type='range' class='radius_slider top_left_corner'  min='0' max='100' value='0'>\n";
-	self.generator_markup+="<input type='range' class='radius_slider top_right_corner' min='0' max='100' value='0'>\n";
-	self.generator_markup+="<div class='generatorOutput'></div>\n";
-	self.generator_markup+="<input type='range' class='radius_slider bottom_right_corner' min='0' max='100' value='0'>\n";
-	self.generator_markup+="<input type='range' class='radius_slider bottom_left_corner'  min='0' max='100' value='0'></div>\n";
-	self.generator_markup+="<div class='panel panel-primary'>\n<div class='panel-body text-center bg-success'>";
-	self.generator_markup+="border-radius: <span class='border_radius_code_output'>0px 0px 0px 0px</span>;\n</div>";
-	self.generator_markup+="</div><ul class='list-group favourites'></ul>\n</div>";
+	self.generator_markup=""+
+	"<div class='generatorContainer'>\n";
+		+"<input type='range' class='radius_slider top_left_corner'  min='0' max='100' value='0'>\n";
+		+"<input type='range' class='radius_slider top_right_corner' min='0' max='100' value='0'>\n";
+		+"<div class='generatorOutput'></div>\n";
+		+"<input type='range' class='radius_slider bottom_right_corner' min='0' max='100' value='0'>\n";
+		+"<input type='range' class='radius_slider bottom_left_corner'  min='0' max='100' value='0'></div>\n";
+		+"<div class='panel panel-primary'>\n"+
+			"<div class='panel-body text-center bg-success'>";
+				+"border-radius: <span class='border_radius_code_output'>0px 0px 0px 0px</span>;\n"+
+			"</div>";//panel-body
+		+"</div><ul class='list-group favourites'></ul> "+
+	"</div>";
 	self.bootstrap_markup="<div class='panel panel-primary'><div class='panel-heading text-center'>Generator</div><div class='panel-body'>"+self.generator_markup+"</div></div>";
 	//detect if the argument passed to the function is a string or an array
 	if(typeof args == 'string'){
