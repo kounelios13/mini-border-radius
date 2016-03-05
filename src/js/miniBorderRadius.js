@@ -27,7 +27,8 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 	self.code=null;
 	var val=function(o){
 		return $(o).val();
-	}
+	};
+	var host=null;
 	self.host_id=null;
 	self.backup=null;
 	self.custom_object=custom_object||".generatorOutput";
@@ -119,7 +120,7 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 	if(typeof args == 'string'){
 		if(!args)
 			throw new Error("Host id can't be empty !!!");
-		self.host_id=args;
+		self.host_id=host=args;
 	}
 	else{
 		self.host_id=args[0];
@@ -148,15 +149,16 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 		return self.backup;
 	};
 	self.restoreBackup=function(destination){
+		var backup=self.getBackup();
 		if(!destination)
 			throw new Error("Invalid destination!!!");
 		if(destination[0]=='.'){
 			var answer=confirm("You are going to create duplicates of your backed content.Are you sure you want to continue");
 			if(answer)
-				$(destination).html(self.getBackup());
+				$(destination).html(backup);
 		}
 		else
-			$(destination).html(self.getBackup());
+			$(destination).html(backup);
 		return self;
 	};
 	self.getCode=function(){
@@ -273,7 +275,7 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 					alert('FileSaver.js was not found');
 					break;
 				default:
-					alert("An error occured"+e.message);	
+					alert("An error occured:"+e.message);	
 			}//switch
 		}//catch
 	};
