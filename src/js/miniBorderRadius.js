@@ -46,6 +46,16 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 	self.generator_markup+="border-radius: <span class='border_radius_code_output'>0px 0px 0px 0px</span>;\n</div>";
 	self.generator_markup+="</div><ul class='list-group favourites'></ul>\n</div>";
 	self.bootstrap_markup="<div class='panel panel-primary'><div class='panel-heading text-center'>Generator</div><div class='panel-body'>"+self.generator_markup+"</div></div>";
+	//detect if the argument passed to the function is a string or an array
+	if(typeof args == 'string'){
+		if(!args)
+			throw new Error("Host id can't be empty !!!");
+		self.host_id=host=args;
+	}
+	else{
+		self.host_id=host=args[0];
+		self.options=args.slice(1);//remove the id of the host container and return the remaining items of the list(height,width,max_value,bg)	
+	}
 	self.getId=function(){
 		return self.host_id;
 	}
@@ -58,8 +68,7 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 		return self;
 	};
 	self.setBackground=function(bg,random_color){
-		var host_div=self.host_id;
-		var target=!enable_bootstrap_panel?host_div+" "+self.custom_object:host_div+" .generatorOutput";
+		var target=!enable_bootstrap_panel?host+" "+self.custom_object:host+" .generatorOutput";
 		if(bg)
 			self.colors.push(bg);
 		function ranColor(){
@@ -75,7 +84,7 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 		var isValidStep=abs(step)<=$(self.sliders[0]).prop("max") && !isNaN(step) && step;
 		if(!isValidStep)
 			throw new Error(!step?"Invalid value":isNaN(step)?"Invalid step value":"Step value is greater than max value");
-		$(self.getId()+" input[type='range']").prop("step",step);
+		$(host+" input[type='range']").prop("step",step);
 		return self;
 	};
 	self.setMax=function(value){
@@ -85,12 +94,12 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 		if(value<$(self.sliders[0]).prop("max")){
 			var old=$(self.sliders[0]).prop("max");
 			self.code=value+"px "+value+"px "+value+"px "+value+"px";
-			$(self.getId()+" .border_radius_code_output").text(self.code);
-			$(self.getId()+" "+self.custom_object).css("border-radius",self.code);	
+			$(host+" .border_radius_code_output").text(self.code);
+			$(host+" "+self.custom_object).css("border-radius",self.code);	
 		}
 		try{
 			//Even if the use enters a negative value there won't be any problem since abs will allways return a possitive value
-			$(self.host_id+" input[type='range']").prop("max",value);
+			$(host+" input[type='range']").prop("max",value);
 			self.options[2]=value;
 		}
 		catch(e){
@@ -116,29 +125,18 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 		}	
 		return self;
 	};
-	//detect if the argument passed to the function is a string or an array
-	if(typeof args == 'string'){
-		if(!args)
-			throw new Error("Host id can't be empty !!!");
-		self.host_id=host=args;
-	}
-	else{
-		self.host_id=args[0];
-		self.options=args.slice(1);//remove the id of the host container and return the remaining items of the list(height,width,max_value,bg)	
-	}
-	//Mind the order
-	//First append and then call init()
 	var render=function(){
-		var host=self.getId();
 		if(host != null && host[0]=='#')
 			$(document).ready(function(){
 				self.backup=$(host).html();
+				//Inject the generator
 				$(host).html(!enable_bootstrap_panel?self.generator_markup:self.bootstrap_markup);//determine if we want a bootstrap panel as a container for our generator or not
 				if(self.custom_object != ".generatorOutput" && reservedItems.indexOf(self.custom_object)==-1){
 					$(host+" .generatorOutput").replaceWith($(self.custom_object));
 					$(self.custom_object).addClass('generatorOutput');
 					reservedItems.push(self.custom_object);
 				}
+				//Call init to apply any default or user options
 				self.init(self.getOptions());
 				self.sliders=$(host+" .radius_slider");
 			});	
@@ -169,7 +167,6 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 	};
 	
 	self.reset=function(){
-		var host=self.getId();
 		self.code="0px 0px 0px 0px";
 		self.sliders.val(0);
 		$(host+" .border_radius_code_output").text(self.code);
@@ -180,13 +177,12 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 		//In order to be able to manipulate DOM properties such as the border radius of an object 
 		//in real time we have to attach an eventListener
 		$(document).ready(function(){
-			var host_div=self.getId();
 			var sliders=self.sliders;
-			$(host_div).on("mousemove touchmove",'.radius_slider',function(){
+			$(host).on("mousemove touchmove",'.radius_slider',function(){
 				//touchmove is needed for touch screens
 				self.code=val(sliders[0])+"px "+val(sliders[1])+"px "+val(sliders[2])+"px "+val(sliders[3])+"px";
-				$(host_div+" .border_radius_code_output").text(self.code);
-				$(host_div+" .generatorOutput").css("border-radius",self.code);
+				$(host+" .border_radius_code_output").text(self.code);
+				$(host+" .generatorOutput").css("border-radius",self.code);
 			});
 		});
 		return self;//return the object that called the function
@@ -194,7 +190,7 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 	self.deactivateGenerator=function(){
 		$(document).ready(function(){
 			self.reset();//First reset the generator 
-			$(self.getId()).off();//Unregister any event listeners attached to the generator
+			$(host).off();//Unregister any event listeners attached to the generator
 		});
 		return self;//return the object that called the function to be able to chain functions
 	};
@@ -202,7 +198,6 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 		//Warning!!!There is no going back
 		//Burn into the depths of hell :p lol
 		//sorry
-		var host=self.getId();
 		$(host+" .generatorContainer").remove();
 		$(host+" .panel").remove();
 		//generators[generators.indexOf(self)]=null; we might want to keep the data from that generator
@@ -216,7 +211,7 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 			throw new Error("This object is already being used.!!!!");
 		$(object).addClass("center-block");
 		$(object).addClass("generatorOutput");
-		$(self.getId()+" "+self.custom_object).replaceWith($(object));
+		$(host+" "+self.custom_object).replaceWith($(object));
 		self.custom_object=object;
 		//Check the current border radius and apply it to the new object
 		$(object).css("border-radius",self.code);//apply the same radius as the object that was replaced
@@ -228,7 +223,6 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 		return self;//return the object that called the function
 	};
 	self.addToFavourites=function(){
-		var host=self.getId();
 		var code=self.getCode();
 		$(host+"  .favourites li").show();
 		if(self.favourites.indexOf(code)==-1 && code != undefined)
@@ -244,13 +238,13 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 		return self.favourites;
 	};
 	self.toggleFavourites=function(){
-		$(self.getId()+"  .favourites li").toggle(800);
+		$(host+"  .favourites li").toggle(800);
 		return self;
 	};
 	self.removeFavourites=function(preserve){
 		if(!preserve)//in case we only want to remove  all list items in the page but keep the actual array 
 			self.favourites.length=0;
-		$(self.getId()+" .favourites li").remove();
+		$(host+" .favourites li").remove();
 		return self;
 	};
 	self.downloadFavourites=function(){
@@ -281,7 +275,6 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 	};
 	self.enablePreview=function(){
 		$(document).ready(function(){
-			var host=self.getId();
 			$(document).on("click",self.getId()+" li",function(){
 				var values=$(this).text().match(/\d+/g);
 				for(var i=0;i<4;i++)
@@ -294,7 +287,6 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 		return self;
 	};
 	self.enableBootstrapContainer=function(){
-		var host=self.getId();
 		var args=self.options;
 		var old_code=self.getCode();
 		var old_favs=self.favourites;
