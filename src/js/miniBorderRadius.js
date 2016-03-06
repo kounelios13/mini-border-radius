@@ -40,7 +40,7 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 	"<div class='generatorContainer'>\n"
 		+"<input type='range' class='radius_slider top_left_corner'  min='0' max='100' value='0'>\n"
 		+"<input type='range' class='radius_slider top_right_corner' min='0' max='100' value='0'>\n"
-		+"<div class='generatorOutput'></div>\n";
+		+"<div class='generatorOutput'></div>\n"
 		+"<input type='range' class='radius_slider bottom_right_corner' min='0' max='100' value='0'>\n"
 		+"<input type='range' class='radius_slider bottom_left_corner'  min='0' max='100' value='0'></div>\n"
 		+"<div class='panel panel-primary'>\n"+
