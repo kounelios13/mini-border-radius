@@ -36,20 +36,23 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 	self.sliders=[];
 	self.favourites=[];
 	self.colors=["#fabb00","rgb(255,53,0)","rgb(3,86,255)","rgb(20, 77, 239)","#107B9E"];
-	self.generator_markup=""+
-	"<div class='generatorContainer'>\n"
-		+"<input type='range' class='radius_slider top_left_corner'  min='0' max='100' value='0'>\n"
-		+"<input type='range' class='radius_slider top_right_corner' min='0' max='100' value='0'>\n"
-		+"<div class='generatorOutput'></div>\n";
-		+"<input type='range' class='radius_slider bottom_right_corner' min='0' max='100' value='0'>\n"
-		+"<input type='range' class='radius_slider bottom_left_corner'  min='0' max='100' value='0'></div>\n"
-		+"<div class='panel panel-primary'>\n"+
+	var template={
+		container:
+		"<div class='generatorContainer'>\n"
+			+"<input type='range' class='radius_slider top_left_corner'  min='0' max='100' value='0'>\n"
+			+"<input type='range' class='radius_slider top_right_corner' min='0' max='100' value='0'>\n"
+			+"<div class='generatorOutput'></div>\n"
+			+"<input type='range' class='radius_slider bottom_right_corner' min='0' max='100' value='0'>\n"
+			+"<input type='range' class='radius_slider bottom_left_corner'  min='0' max='100' value='0'></div>\n"
+			+"<div class='panel panel-primary'>\n"+
 			"<div class='panel-body text-center bg-success'>"
 				+"border-radius: <span class='border_radius_code_output'>0px 0px 0px 0px</span>;\n"+
 			"</div>"//panel-body
-		+"</div><ul class='list-group favourites'></ul> "+
-	"</div>";
-	self.bootstrap_markup="<div class='panel panel-primary'><div class='panel-heading text-center'>Generator</div><div class='panel-body'>"+self.generator_markup+"</div></div>";
+			+"</div><ul class='list-group favourites'></ul> "+
+		"</div>",
+		bootstrap:
+		"<div class='panel panel-primary'><div class='panel-heading text-center'>Generator</div><div class='panel-body'>"+this['container']+"</div></div>"
+	};
 	//detect if the argument passed to the function is a string or an array
 	if(typeof args == 'string'){
 		if(!args)
@@ -134,7 +137,7 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 			$(document).ready(function(){
 				self.backup=$(host).html();
 				//Inject the generator
-				$(host).html(!enable_bootstrap_panel?self.generator_markup:self.bootstrap_markup);//determine if we want a bootstrap panel as a container for our generator or not
+				$(host).html(!enable_bootstrap_panel?template['container']:template['bootstrap']);//determine if we want a bootstrap panel as a container for our generator or not
 				if(self.custom_object != ".generatorOutput" && reservedItems.indexOf(self.custom_object)==-1){
 					$(host+" .generatorOutput").replaceWith($(self.custom_object));
 					$(self.custom_object).addClass('generatorOutput');
