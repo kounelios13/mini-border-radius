@@ -67,8 +67,6 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 		return self;
 	};
 	self.setBackground=function(bg,random_color){
-		var host_div=self.host_id;
-		var target=!enable_bootstrap_panel?host_div+" "+self.custom_object:host_div+" .generatorOutput";
 		if(bg)
 			self.colors.push(bg);
 		function ranColor(){
@@ -76,7 +74,7 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 		};
 		var color=!random_color?bg:ranColor();
 		self.options[3]=color;
-		$(target).css("background",color,'!important');
+		$(host+" .generatorOutput").css("background",color,'!important');
 		return self;
 	};
 	self.setStep=function (step) {
@@ -130,7 +128,7 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 	var render=function(){
 		$(document).ready(function(){
 			$(host).html(!enable_bootstrap_panel?self.generator_markup:self.bootstrap_markup);//determine if we want a bootstrap panel as a container for our generator or not
-			if(self.custom_object != ".generatorOutput" && reservedItems.indexOf(self.custom_object)==-1){
+			if(self.custom_object != ".generatorOutput" /*&& reservedItems.indexOf(self.custom_object)==-1*/){
 				$(host+" .generatorOutput").replaceWith($(self.custom_object));
 				$(self.custom_object).addClass('generatorOutput');
 				reservedItems.push(self.custom_object);
@@ -192,8 +190,9 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 			reservedItems.push(object);
 		else 
 			throw new Error("This object is already being used.!!!!");
-		$(host+" .generatorOutput").replaceWith($(object).addClass("center-block generatorOutput"));
+		$(host+" "+self.custom_object).replaceWith($(object));
 		self.custom_object=object;
+		$(object).addClass("center-block generatorOutput");
 		//Check the current border radius and apply it to the new object
 		$(host+" .generatorOutput").css("border-radius",self.code);//apply the same radius as the object that was replaced
 		if(!restrict_size)
@@ -228,7 +227,7 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 			self.favourites.length=0;
 		$(host+" .favourites li").remove();
 		return self;
-	};
+};
 	self.downloadFavourites=function(){
 		var file="/********\n";
 		var items=self.getFavourites();
@@ -273,6 +272,7 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 		var old_code=self.getCode();
 		var old_favs=self.favourites;
 		var old_obj=self.custom_object;
+		console.log("Name:"+host+"|"+old_obj);
 		args.unshift(host);
 		var isFavouritesListVisible=$(host+" .list-group li").is(":visible");
 		var index=generators.indexOf(self);
@@ -295,6 +295,7 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 			self.code=old_code;
 			self.favourites=old_favs;
 			generators[index]=self;
+			$(host+" .generatorOutput").show();
 		return self;
 	};	
 	render();
