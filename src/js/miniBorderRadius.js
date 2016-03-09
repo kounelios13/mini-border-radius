@@ -63,7 +63,7 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 		var target=!enable_bootstrap_panel?host_div+" "+self.custom_object:host_div+" .generatorOutput";
 		self.options[0]=height;
 		self.options[1]=width;
-		$(target).height(height).width(width);
+		$(host+" .generatorOutput").height(height).width(width);
 		return self;
 	};
 	self.setBackground=function(bg,random_color){
@@ -271,8 +271,7 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 		var args=self.options;
 		var old_code=self.getCode();
 		var old_favs=self.favourites;
-		var old_obj=self.custom_object;
-		console.log("Name:"+host+"|"+old_obj);
+		var old_obj=$(self.custom_object).clone();//Don't forget to clone the old custom object
 		args.unshift(host);
 		var isFavouritesListVisible=$(host+" .list-group li").is(":visible");
 		var index=generators.indexOf(self);
