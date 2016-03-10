@@ -24,7 +24,6 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 	//and we use it
 	var self=this;
 	self.code="0px 0px 0px 0px";
-
 	var val=function(o){
 		return $(o).val();
 	}
