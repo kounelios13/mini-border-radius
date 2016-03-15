@@ -58,8 +58,6 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 		return self.host_id;
 	}
 	self.setSize=function(height,width){
-		var host_div=self.host_id;
-		var target=!enable_bootstrap_panel?host_div+" "+self.custom_object:host_div+" .generatorOutput";
 		self.options[0]=height;
 		self.options[1]=width;
 		$(host+" .generatorOutput").height(height).width(width);
@@ -76,7 +74,7 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 		$(host+" .generatorOutput").css("background",color,'!important');
 		return self;
 	};
-	self.setStep=function (step) {
+	self.setStep=function(step) {
 		step=abs(step);
 		var isValidStep=abs(step)<=$(self.sliders[0]).prop("max") && !isNaN(step) && step;
 		if(!isValidStep)
@@ -189,7 +187,7 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 			reservedItems.push(object);
 		else 
 			throw new Error("This object is already being used.!!!!");
-		$(host+" "+self.custom_object).replaceWith($(object));
+		$(host+" .generatorOutput").replaceWith($(object));
 		self.custom_object=object;
 		$(object).addClass("center-block generatorOutput");
 		//Check the current border radius and apply it to the new object
@@ -203,7 +201,7 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 		return self;//return the object that called the function
 	};
 	self.addToFavourites=function(){
-		$(host+"  .favourites li").show();
+		$(host+" .favourites li").show();
 		var code=self.getCode();
 		if(self.favourites.indexOf(code)==-1 && code != undefined && code != "0px 0px 0px 0px")
 			self.favourites.push(code);
@@ -218,9 +216,10 @@ function Generator(args,custom_object,enable_bootstrap_panel){
 		return self.favourites;
 	};
 	self.toggleFavourites=function(){
-		$(host+"  .favourites li").toggle(800);
+		$(host+" .favourites li").toggle(800);
 		return self;
 	};
+
 	self.removeFavourites=function(preserve){
 		if(!preserve)//in case we only want to remove  all list items in the page but keep the actual array 
 			self.favourites.length=0;
