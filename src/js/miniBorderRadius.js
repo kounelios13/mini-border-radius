@@ -126,11 +126,10 @@ function Generator(args, custom_object, enable_bootstrap_panel) {
 	self.init = function(options) {
 		//here we pass an array of default args-options with the following order
 		//height,width,max,background_color
-		if (!options)
-			throw new Error("No list of options found");
-		else if (options.length < 4) {
-			throw new Error("Expected 4 parameters but got " + options.length + " parameters");
-		} else {
+		var num = options.length || 0;
+		if (!options || num < 4)
+			throw new Error(!options?"No list of options found":"Expected 4 parameters but got " +num + " parameters");
+		else {
 			self.options = options;
 			self.setSize(options[0], options[1]).setMax(options[2]).setBackground(options[3]);
 		}
@@ -248,7 +247,8 @@ function Generator(args, custom_object, enable_bootstrap_panel) {
 		for (var i = 0, max = items.length; i < max; i++)
 			file += "border-radius:" + items[i] + ";\n";
 		file += "\n******************miniBorderRadius plugin******************" +
-			"\n--visit https://github.com/kounelios13/mini-border-radius--" + "\n-------------------to see more-------------------.\n****/";
+			"\n--visit https://github.com/kounelios13/mini-border-radius--" + 
+			"\n-------------------to see more-------------------.\n****/";
 		try {
 			var blob = new Blob([file], {
 				type: "text/plain;charset=utf-8"
@@ -294,7 +294,7 @@ function Generator(args, custom_object, enable_bootstrap_panel) {
 			$(self.sliders[i]).val(values[i]);
 		$(host + " .border_radius_code_output").text(old_code);
 		var old_list = "";
-		for (var i = 0; i < old_favs.length; i++)
+		for (var i = 0,max=old_favs.length; i < max; i++)
 			old_list += "<li class='generator_favourites list-group-item'>border-radius:" + old_favs[i] + ";</li>\n";
 		$(host + " .list-group").append(old_list);
 		//Check if the favourites were visible before replacing the default container with a bootstrap panel
