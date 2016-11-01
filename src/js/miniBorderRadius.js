@@ -56,6 +56,7 @@ function Generator(args, custom_object, enable_bootstrap_panel) {
 	self.favourites = [];
 	//self.colors=["#fabb00","rgb(255,53,0)","rgb(3,86,255)","rgb(20, 77, 239)","#107B9E"];
 	var host = null;
+
 	if (typeof args == 'string') {
 		if (!args)
 			throw new Error("Host id can't be empty !!!");
@@ -67,6 +68,7 @@ function Generator(args, custom_object, enable_bootstrap_panel) {
 	var _markup = "" +
 		"<div class='generatorContainer'>\n" + "<input type='range' class='radius_slider top_left_corner'  min='0' max='100' value='0'>\n" + "<input type='range' class='radius_slider top_right_corner' min='0' max='100' value='0'>\n" + "<div class='generatorOutput'></div>\n" + "<input type='range' class='radius_slider bottom_right_corner' min='0' max='100' value='0'>\n" + "<input type='range' class='radius_slider bottom_left_corner'  min='0' max='100' value='0'></div>\n" + "<div class='panel panel-primary'>\n<div class='panel-body text-center bg-success'>" + "border-radius: <span class='border_radius_code_output'>0px 0px 0px 0px</span>;\n</div>" + "</div><ul class='list-group favourites'></ul>\n</div>";
 	var _bootstrap_markup = "<div class='panel panel-primary'><div class='panel-heading text-center'>Generator</div><div class='panel-body'>" + _markup + "</div></div>";
+	var radiusOutputObject = $(host+" .generatorOutput");
 	self.getId = function() {
 		return self.host_id;
 	}
@@ -75,7 +77,7 @@ function Generator(args, custom_object, enable_bootstrap_panel) {
 		var target = !enable_bootstrap_panel ? host_div + " " + self.custom_object : host_div + " .generatorOutput";
 		self.options[0] = height;
 		self.options[1] = width;
-		$(host + " .generatorOutput").height(height).width(width);
+		radiusOutputObject.height(height).width(width);
 		return self;
 	};
 	self.setBackground = function(bg, random_color) {
@@ -91,7 +93,7 @@ function Generator(args, custom_object, enable_bootstrap_panel) {
 		}
 		var color = !random_color ? bg : ranColor();
 		self.options[3] = color;
-		$(host + " .generatorOutput").css("background", color, '!important');
+		radiusOutputObject.css("background", color, '!important');
 		return self;
 	};
 	self.setStep = function(step) {
@@ -143,7 +145,7 @@ function Generator(args, custom_object, enable_bootstrap_panel) {
 		$(function() {
 			$(host).html(!enable_bootstrap_panel ? _markup : _bootstrap_markup); //determine if we want a bootstrap panel as a container for our generator or not
 			if (self.custom_object != ".generatorOutput" /*&& reservedItems.indexOf(self.custom_object)==-1*/ ) {
-				$(host + " .generatorOutput").replaceWith($(self.custom_object));
+				radiusOutputObject.replaceWith($(self.custom_object));
 				$(self.custom_object).addClass('generatorOutput');
 				reservedItems.push(self.custom_object);
 			}
@@ -163,7 +165,7 @@ function Generator(args, custom_object, enable_bootstrap_panel) {
 		self.code = "0px 0px 0px 0px";
 		self.sliders.val(0);
 		$(host + " .border_radius_code_output").text(self.code);
-		$(host + " .generatorOutput").css("border-radius", "0");
+		radiusOutputObject.css("border-radius", "0");
 		return self;
 	};
 	self.activateGenerator = function() {
@@ -175,7 +177,7 @@ function Generator(args, custom_object, enable_bootstrap_panel) {
 				//touchmove is needed for touch screens
 				self.code = val(sliders[0]) + "px " + val(sliders[1]) + "px " + val(sliders[2]) + "px " + val(sliders[3]) + "px";
 				$(host + " .border_radius_code_output").text(self.code);
-				$(host + " .generatorOutput").css("border-radius", self.code);
+				radiusOutputObject.css("border-radius", self.code);
 			});
 		});
 		return self; //return the object that called the function
@@ -206,13 +208,14 @@ function Generator(args, custom_object, enable_bootstrap_panel) {
 		self.custom_object = object;
 		$(object).addClass("center-block generatorOutput");
 		//Check the current border radius and apply it to the new object
-		$(host + " .generatorOutput").css("border-radius", self.code); //apply the same radius as the object that was replaced
+		radiusOutputObject = $(host +" .generatorOutput");
+		radiusOutputObject.css("border-radius", self.code); //apply the same radius as the object that was replaced
 		if (!restrict_size)
 			self.options = [$(object).css("height"), $(object).css("width"), self.options[2], $(object).css("background")];
 		else
 			self.options = [self.options[0], self.options[1], self.options[2], $(object).css("background")];
 		self.init(self.options);
-		$(self.host_id + " .generatorOutput").show();
+		radiusOutputObject.show();
 		return self; //return the object that called the function
 	};
 	self.addToFavourites = function() {
