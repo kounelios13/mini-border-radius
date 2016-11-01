@@ -39,6 +39,9 @@ function Generator(args, custom_object, enable_bootstrap_panel) {
 	function abs(a) {
 		return Math.abs(a);
 	}
+	function createListItem(data){
+		return "<li class='generator_favourites list-group-item'>border-radius:"+data+";</li>";
+	}
 	//to avoid using 'this' all the time we create a self reference
 	//and we use it
 	var self = this;
@@ -221,7 +224,7 @@ function Generator(args, custom_object, enable_bootstrap_panel) {
 			return self; //the code exists so exit the function
 		//buggy function lol somebody fix self shit
 		//not that buggy anymore :)
-		$(host + " ul.favourites").append("<li class='generator_favourites list-group-item'>border-radius:" + code + ";</li>");
+		$(host + " ul.favourites").append(createListItem(code));
 		return self;
 	};
 	self.getFavourites = function() {
@@ -295,7 +298,7 @@ function Generator(args, custom_object, enable_bootstrap_panel) {
 		$(host + " .border_radius_code_output").text(old_code);
 		var old_list = "";
 		for (var i = 0,max=old_favs.length; i < max; i++)
-			old_list += "<li class='generator_favourites list-group-item'>border-radius:" + old_favs[i] + ";</li>\n";
+			old_list += createListItem(old_favs[i]);
 		$(host + " .list-group").append(old_list);
 		//Check if the favourites were visible before replacing the default container with a bootstrap panel
 		//If true make them visible again
