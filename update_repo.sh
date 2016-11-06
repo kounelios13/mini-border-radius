@@ -4,5 +4,5 @@ read "msg"
 git add "*.*"
 git commit -m"$msg"
 git push
-echo "Press any key to exit"
+echo "Press enter to exit"
 read k
