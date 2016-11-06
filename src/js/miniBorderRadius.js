@@ -56,7 +56,7 @@ function Generator(args, custom_object, enable_bootstrap_panel) {
 	self.favourites = [];
 	//self.colors=["#fabb00","rgb(255,53,0)","rgb(3,86,255)","rgb(20, 77, 239)","#107B9E"];
 	var host = null;
-	
+
 	if (typeof args == 'string') {
 		if (!args)
 			throw new Error("Host id can't be empty !!!");
@@ -74,9 +74,9 @@ function Generator(args, custom_object, enable_bootstrap_panel) {
 	self.setSize = function(height, width) {
 		var host_div = self.host_id;
 		var target = !enable_bootstrap_panel ? host_div + " " + self.custom_object : host_div + " .generatorOutput";
-		self.options[0] = height;
-		self.options[1] = width;
-		$(host + " .generatorOutput").height(height).width(width);
+		self.options[0] = Math.abs(height);
+		self.options[1] = Math.abs(width);
+		$(host + " .generatorOutput").height(self.options[0]).width(self.options[1]);
 		return self;
 	};
 	self.setBackground = function(bg, random_color) {
@@ -97,6 +97,7 @@ function Generator(args, custom_object, enable_bootstrap_panel) {
 	};
 	self.setStep = function(step) {
 		var step = abs(step);
+		/*Cannot set a step that exceeds the max value of a slider*/
 		var isValidStep = step <= $(self.sliders[0]).prop("max") && !isNaN(step) && step;
 		if (!isValidStep)
 			throw new Error(!step ? "Invalid value" : isNaN(step) ? "Invalid step value" : "Step value is greater than max value");
@@ -170,7 +171,6 @@ function Generator(args, custom_object, enable_bootstrap_panel) {
 	self.activateGenerator = function() {
 		//In order to be able to manipulate DOM properties such as the border radius of an object 
 		//in real time we have to attach an eventListener
-		$(function() {
 			var sliders = self.sliders;
 			$(host).on("mousemove touchmove", '.radius_slider', function() {
 				//touchmove is needed for touch screens
@@ -178,14 +178,13 @@ function Generator(args, custom_object, enable_bootstrap_panel) {
 				$(host + " .border_radius_code_output").text(self.code);
 				$(host + " .generatorOutput").css("border-radius", self.code);
 			});
-		});
 		return self; //return the object that called the function
 	};
 	self.deactivateGenerator = function() {
-		$(document).ready(function() {
+
 			self.reset(); //First reset the generator 
 			$(host).off(); //Unregister any event listeners attached to the generator
-		});
+
 		return self; //return the object that called the function to be able to chain functions
 	};
 	self.destroyGenerator = function() {
@@ -269,7 +268,6 @@ function Generator(args, custom_object, enable_bootstrap_panel) {
 		} //catch
 	};
 	self.enablePreview = function() {
-		$(document).ready(function() {
 			$(document).on("click", host + " li", function() {
 				var values = $(this).text().match(/\d+/g);
 				for (var i = 0; i < 4; i++)
@@ -278,7 +276,6 @@ function Generator(args, custom_object, enable_bootstrap_panel) {
 				$(host + " .generatorOutput").css("border-radius", self.code);
 				$(host + " .border_radius_code_output").text(self.code);
 			});
-		});
 		return self;
 	};
 	self.enableBootstrapContainer = function() {
