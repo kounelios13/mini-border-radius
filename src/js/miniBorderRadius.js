@@ -39,8 +39,8 @@ function Generator(args, custom_object, enable_bootstrap_panel) {
 	function abs(a) {
 		return Math.abs(a);
 	}
-	function createListItem(data){
-		return "<li class='generator_favourites list-group-item'>border-radius:"+data+";</li>";
+	function createListItem(data) {
+		return "<li class='generator_favourites list-group-item'>border-radius:" + data + ";</li>";
 	}
 	//to avoid using 'this' all the time we create a self reference
 	//and we use it
@@ -56,7 +56,6 @@ function Generator(args, custom_object, enable_bootstrap_panel) {
 	self.favourites = [];
 	//self.colors=["#fabb00","rgb(255,53,0)","rgb(3,86,255)","rgb(20, 77, 239)","#107B9E"];
 	var host = null;
-
 	if (typeof args == 'string') {
 		if (!args)
 			throw new Error("Host id can't be empty !!!");
@@ -133,7 +132,7 @@ function Generator(args, custom_object, enable_bootstrap_panel) {
 		//height,width,max,background_color
 		var num = options.length || 0;
 		if (!options || num < 4)
-			throw new Error(!options?"No list of options found":"Expected 4 parameters but got " +num + " parameters");
+			throw new Error(!options ? "No list of options found" : "Expected 4 parameters but got " + num + " parameters");
 		else {
 			self.options = options;
 			self.setSize(options[0], options[1]).setMax(options[2]).setBackground(options[3]);
@@ -171,20 +170,18 @@ function Generator(args, custom_object, enable_bootstrap_panel) {
 	self.activateGenerator = function() {
 		//In order to be able to manipulate DOM properties such as the border radius of an object 
 		//in real time we have to attach an eventListener
-			var sliders = self.sliders;
-			$(host).on("mousemove touchmove", '.radius_slider', function() {
-				//touchmove is needed for touch screens
-				self.code = val(sliders[0]) + "px " + val(sliders[1]) + "px " + val(sliders[2]) + "px " + val(sliders[3]) + "px";
-				$(host + " .border_radius_code_output").text(self.code);
-				$(host + " .generatorOutput").css("border-radius", self.code);
-			});
+		var sliders = self.sliders;
+		$(host).on("mousemove touchmove", '.radius_slider', function() {
+			//touchmove is needed for touch screens
+			self.code = val(sliders[0]) + "px " + val(sliders[1]) + "px " + val(sliders[2]) + "px " + val(sliders[3]) + "px";
+			$(host + " .border_radius_code_output").text(self.code);
+			$(host + " .generatorOutput").css("border-radius", self.code);
+		});
 		return self; //return the object that called the function
 	};
 	self.deactivateGenerator = function() {
-
-			self.reset(); //First reset the generator 
-			$(host).off(); //Unregister any event listeners attached to the generator
-
+		self.reset(); //First reset the generator 
+		$(host).off(); //Unregister any event listeners attached to the generator
 		return self; //return the object that called the function to be able to chain functions
 	};
 	self.destroyGenerator = function() {
@@ -250,7 +247,7 @@ function Generator(args, custom_object, enable_bootstrap_panel) {
 		for (var i = 0, max = items.length; i < max; i++)
 			file += "border-radius:" + items[i] + ";\n";
 		file += "\n******************miniBorderRadius plugin******************" +
-			"\n--visit https://github.com/kounelios13/mini-border-radius--" + 
+			"\n--visit https://github.com/kounelios13/mini-border-radius--" +
 			"\n-------------------to see more-------------------.\n****/";
 		try {
 			var blob = new Blob([file], {
@@ -268,14 +265,14 @@ function Generator(args, custom_object, enable_bootstrap_panel) {
 		} //catch
 	};
 	self.enablePreview = function() {
-			$(document).on("click", host + " li", function() {
-				var values = $(this).text().match(/\d+/g);
-				for (var i = 0; i < 4; i++)
-					$(self.sliders[i]).val(values[i]);
-				self.code = $(this).text().split(":")[1].split(';')[0];
-				$(host + " .generatorOutput").css("border-radius", self.code);
-				$(host + " .border_radius_code_output").text(self.code);
-			});
+		$(document).on("click", host + " li", function() {
+			var values = $(this).text().match(/\d+/g);
+			for (var i = 0; i < 4; i++)
+				$(self.sliders[i]).val(values[i]);
+			self.code = $(this).text().split(":")[1].split(';')[0];
+			$(host + " .generatorOutput").css("border-radius", self.code);
+			$(host + " .border_radius_code_output").text(self.code);
+		});
 		return self;
 	};
 	self.enableBootstrapContainer = function() {
@@ -295,7 +292,7 @@ function Generator(args, custom_object, enable_bootstrap_panel) {
 			$(self.sliders[i]).val(values[i]);
 		$(host + " .border_radius_code_output").text(old_code);
 		var old_list = "";
-		for (var i = 0,max=old_favs.length; i < max; i++)
+		for (var i = 0, max = old_favs.length; i < max; i++)
 			old_list += createListItem(old_favs[i]);
 		$(host + " .list-group").append(old_list);
 		//Check if the favourites were visible before replacing the default container with a bootstrap panel
