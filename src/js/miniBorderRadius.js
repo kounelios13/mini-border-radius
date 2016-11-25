@@ -4,6 +4,9 @@
 	miniBorderRadius 2016
 */
 "use strict";
+Array.prototype.isEmpty = function(){
+	return this.length < 1;
+};
 var generators = [];
 var reservedItems = [];
 function isChainable(name) {
@@ -141,6 +144,9 @@ function Generator(args, custom_object, enable_bootstrap_panel) {
 	};
 	//detect if the argument passed to the function is a string or an array
 	var render = function() {
+		//Create the generator when browser has finished loading the page
+		//Mind the order
+		//First create the html markup in the page and then call init()
 		$(function() {
 			$(host).html(!enable_bootstrap_panel ? _markup : _bootstrap_markup); //determine if we want a bootstrap panel as a container for our generator or not
 			if (self.custom_object != ".generatorOutput" /*&& reservedItems.indexOf(self.custom_object)==-1*/ ) {
@@ -152,8 +158,6 @@ function Generator(args, custom_object, enable_bootstrap_panel) {
 			self.sliders = $(host + " .radius_slider");
 		});
 	};
-	//Mind the order
-	//First create the html markup in the page and then call init()
 	self.getCode = function() {
 		return self.code;
 	};
@@ -193,6 +197,7 @@ function Generator(args, custom_object, enable_bootstrap_panel) {
 		//generators[generators.indexOf(self)]=null; we might want to keep the data from that generator
 	};
 	self.replaceObject = function(object, restrict_size) {
+		//The new object must be unique
 		if (!object || object[0] == '.' || object[0] != "#")
 			throw new Error(!object ? "Invalid object detected" : "Class detected.Please switch to an object with id insted of class");
 		if (reservedItems.indexOf(object) == -1)
@@ -215,24 +220,28 @@ function Generator(args, custom_object, enable_bootstrap_panel) {
 	self.addToFavourites = function() {
 		$(host + "  .favourites li").show();
 		var code = self.getCode();
-		if (self.favourites.indexOf(code) == -1 && code && code != "0px 0px 0px 0px")
-			self.favourites.push(code);
-		else
-			return self; //the code exists so exit the function
-		//buggy function lol somebody fix self shit
-		//not that buggy anymore :)
+		var codeExists = 
+			self.favourites.indexOf(code) != -1 
+					|| !code  
+						|| code == "0px 0px 0px 0px";
+		 //the code exists so exit the function
+		if(codeExists)
+			return self;
+		self.favourites.push(code);
 		$(host + " ul.favourites").append(createListItem(code));
 		return self;
 	};
 	self.getFavourites = function() {
-		return self.favourites;
+		var array = self.favourites;
+		return array.isEmpty()?self:array;
 	};
 	self.toggleFavourites = function() {
 		$(host + "  .favourites li").toggle(800);
 		return self;
 	};
 	self.removeFavourites = function(preserve) {
-		if (!preserve) //in case we only want to remove  all list items in the page but keep the actual array 
+		 //in case we only want to remove  all list items in the page but keep the actual array 
+		if (!preserve)
 			self.favourites.length = 0;
 		$(host + " .favourites li").remove();
 		return self;
@@ -240,7 +249,7 @@ function Generator(args, custom_object, enable_bootstrap_panel) {
 	self.downloadFavourites = function() {
 		var file = "/********\n";
 		var items = self.getFavourites();
-		if (items.length < 1) {
+		if (items.isEmpty()) {
 			alert("No favourites to download.");
 			throw new Error("No items to download");
 		}
